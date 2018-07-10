@@ -99,15 +99,17 @@ for (modNum in patternRange)
 	dev.off()
 }
 
-for(res_file in names(AMARETTOresults2))
-{
 
-  #gctPCA = {}
-  #gctPCA$data <- AMARETTOresults2[[res_file]]
-  #write.gct(gctPCA, file.path(getwd(), paste(opt$output.file, "_amaretto.gct", sep="")))
-	
+tsvFiles = c("NrModules","AllRegulators","AllGenes")
+for(res_file in tsvFiles)
+{
   resdata <- AMARETTOresults2[[res_file]]
-  write.table(resdata,file.path(getwd(),paste(res_file,"_amaretto_JR.tsv",sep = "")),row.names=T,sep="\t",quote=F)#,col.names=F
+  write.table(resdata,file.path(getwd(),paste(res_file,"_amaretto.tsv",sep = "")),row.names=T,sep="\t",quote=F)#,col.names=F
 }
 
-
+gctFiles = c("ModuleMembership","ModuleData","RegulatoryProgramData","RegulatoryPrograms")
+for(res_file in gctFiles)
+{
+    gct <-list(data=AMARETTOresults2[[res_file]])
+    write.gct(gct, file.path(getwd(),paste(res_file,"_amaretto.gct",sep = "")))
+}
