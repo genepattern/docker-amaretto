@@ -1,0 +1,113 @@
+#Fri, 22 Jun 2018 09:09:40 -0700
+#Mon Jun 18 21:02:09 UTC 2018
+JVMLevel=
+LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00378\:0.1
+author=Olivier Gevaert, Stanford University, wrapped as a module by Ted Liefeld, UCSD School of Medicine.
+categories=SingleCell
+commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/amaretto/run_amaretto_module.R  --expression.file\=<expression.file> --copy.number.file=<copy.number.file> --methylation.file=<methylation.file> --output.file\=<output.file> --percent.genes=<percent.genes> --number.of.modules=<number.of.modules>
+cpuType=any
+description=Run common single cell analysis including differential expression, downsampling analysis, and clustering.
+fileFormat=gct
+language=any
+minGenePatternVersion=3.9.13
+name=Amaretto
+os=any
+job.docker.image=genepattern/docker-amaretto
+
+p1_MODE=IN
+p1_TYPE=FILE
+p1_default_value=
+p1_description=A gct file containing the gene expression profiles
+p1_fileFormat=gct
+p1_flag=
+p1_name=expression.file
+p1_numValues=1..1
+p1_optional=
+p1_prefix=
+p1_prefix_when_specified=
+p1_type=java.io.File
+p1_value=
+
+p2_MODE=IN
+p2_TYPE=FILE
+p2_default_value=
+p2_description=A gct file containing the copy number profiles
+p2_fileFormat=gct
+p2_flag=
+p2_name=copy.number.file
+p2_numValues=1..1
+p2_optional=
+p2_prefix=
+p2_prefix_when_specified=
+p2_type=java.io.File
+p2_value=
+
+
+p3_MODE=IN
+p3_TYPE=FILE
+p3_default_value=
+p3_description=A gct file containing the methylation profiles
+p3_fileFormat=gct
+p3_flag=
+p3_name=methylation.file
+p3_numValues=1..1
+p3_optional=
+p3_prefix=
+p3_prefix_when_specified=
+p3_type=java.io.File
+p3_value=
+
+
+
+p4_MODE=
+p4_TYPE=TEXT
+p4_default_value=10
+p4_description=Number of modules
+p4_fileFormat=
+p4_flag=
+p4_name=number.of.modules
+p4_numValues=1..1
+p4_optional=
+p4_prefix=
+p4_prefix_when_specified=
+p4_type=java.lang.String
+p4_value=
+
+p5_MODE=
+p5_TYPE=TEXT
+p5_default_value=5
+p5_description=Percent genes to use
+p5_fileFormat=
+p5_flag=
+p5_name=percent.genes
+p5_numValues=1..1
+p5_optional=
+p5_prefix=
+p5_prefix_when_specified=
+p5_type=java.lang.String
+p5_value=
+
+
+p6_MODE=
+p6_TYPE=TEXT
+p6_default_value=<expression.file_basename>
+p6_description=Base name for output files
+p6_fileFormat=
+p6_flag=
+p6_name=output.file
+p6_numValues=1..1
+p6_optional=
+p6_prefix=
+p6_prefix_when_specified=
+p6_type=java.lang.String
+p6_value=
+
+privacy=public
+publicationDate=06/22/2018 09\:09 
+quality=${quality.level}
+requiredPatchLSIDs=
+requiredPatchURLs=
+taskDoc=doc.html
+taskType=SingleCell
+userid=ted-dev
+version=Initial Revision
