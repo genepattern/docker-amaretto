@@ -27,7 +27,7 @@
 -->
 
 <project basedir="" default="devReleaseModule" name="Amaretto">
-    <property name="dirOffset" value="../../modules/common_module_code" />
+    <property name="dirOffset" value="../common_module_code" />
     <import file="${dirOffset}/commontargets.xml" />
 
     <target name="init">
