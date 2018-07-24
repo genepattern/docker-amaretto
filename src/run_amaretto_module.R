@@ -48,8 +48,7 @@ opts <- opt$options
 # Load some common GP utility code for handling GCT files and so on.  This is included
 # with the module and so it will be found in the same location as this script (libdir).
 source(file.path("/usr/local/bin/amaretto/", "common.R"))
-
-
+source(file.path("/usr/local/bin/amaretto/","AMARETTO_VisualizeModulePatch_0.99.2.R"))
 
 # Optparse will validate increment.value and convert it to a numeric value or give it the
 # default value of 10 if missing.  We must check for NA however (and NULL, to be safe) as

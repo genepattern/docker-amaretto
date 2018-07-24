@@ -1,14 +1,15 @@
 #
 # #######  Generate all the gct files
 #
-source("/Users/liefeld/GenePattern/gp_dev/docker/docker-amaretto/src/common.R")
+#source("/Users/liefeld/GenePattern/gp_dev/docker/docker-amaretto/src/common.R")
 library(AMARETTO)
 TargetDirectory=getwd()
 
 
-codes = c("BLCA","BRCA","CESC","CHOL", "COAD","ESCA","GBM","HNSC","KIRC","KIRP","LAML","LGG","LIHC","LUAD","LUSC","OV","PAAD","PCPG","READ","SARC","STAD","THCA","THYM","UCEC")
+#codes = c("BLCA","BRCA","CESC","CHOL", "COAD","ESCA","GBM","HNSC","KIRC","KIRP","LAML","LGG","LIHC","LUAD","LUSC","OV","PAAD","PCPG","READ","SARC","STAD","THCA","THYM","UCEC")
 
-codes = c("ACC","FPPP","KICH","DLBC","MESO","PRAD","SKCM","STAD","TGCT","UCS","UVM")
+#codes = c("ACC","FPPP","KICH","DLBC","MESO","PRAD","SKCM","STAD","TGCT","UCS","UVM")
+codes = c("KIRP", "HSNC", "COADREAD")
 
 data(MethylStates)
 
