@@ -17,6 +17,12 @@ suppressMessages(suppressWarnings(library(getopt)))
 suppressMessages(suppressWarnings(library(optparse)))
 suppressMessages(suppressWarnings(library(AMARETTO)))
 
+source('/usr/local/bin/amaretto/mohsen_report_function.R')
+print("loading Mohsens code")
+print("this goes to stderr ", stderr())
+source('/usr/local/bin/amaretto/hyper_geo_test/read_gct.R')
+
+
 # Print the sessionInfo so that there is a listing of loaded packages, 
 # the current version of R, and other environmental information in our
 # stdout file.  This can be useful for reproducibility, troubleshooting
@@ -86,15 +92,15 @@ if (!file.exists(opts$methylation.file)){
 gct_meth <- read.gct(opts$methylation.file)
 
 
-AMARETTOinit2 = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,percent.genes)
-AMARETTOresults2 = AMARETTO_Run(AMARETTOinit2)
+AMARETTOinit = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,percent.genes)
+AMARETTOresults = AMARETTO_Run(AMARETTOinit)
 
 dirName="."
 
 for (modNum in patternRange)
 {
 	pdf( paste(opts$output.file,"_module_", modNum, ".pdf"))
-	print(AMARETTO_VisualizeModule(AMARETTOinit2,AMARETTOresults2,gct_cn$data,gct_meth$data,ModuleNr=modNum))
+	print(AMARETTO_VisualizeModule(AMARETTOinit,AMARETTOresults,gct_cn$data,gct_meth$data,ModuleNr=modNum))
 	dev.off()
 }
 
@@ -102,13 +108,17 @@ for (modNum in patternRange)
 tsvFiles = c("NrModules","AllRegulators","AllGenes")
 for(res_file in tsvFiles)
 {
-  resdata <- AMARETTOresults2[[res_file]]
+  resdata <- AMARETTOresults[[res_file]]
   write.table(resdata,file.path(getwd(),paste(res_file,"_amaretto.tsv",sep = "")),row.names=T,sep="\t",quote=F)#,col.names=F
 }
 
 gctFiles = c("ModuleMembership","ModuleData","RegulatoryProgramData","RegulatoryPrograms")
 for(res_file in gctFiles)
 {
-    gct <-list(data=AMARETTOresults2[[res_file]])
+    gct <-list(data=AMARETTOresults[[res_file]])
     write.gct(gct, file.path(getwd(),paste(res_file,"_amaretto.gct",sep = "")))
 }
+
+dir.create("hyper_geo_test")
+print("Starting report ", stderr())
+res <- amaretto_html_report( AMARETTOinit, AMARETTOresults, gct_cn$data, gct_meth$data, TRUE)

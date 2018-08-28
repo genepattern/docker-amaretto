@@ -18,12 +18,6 @@ RUN apt-get update && apt-get upgrade --yes && \
     apt-get install  xvfb xauth xfonts-base libxt-dev -y && \
     rm -rf /var/lib/apt/lists/*
 
-# apt-get install libgtk2.0-dev libpango1.0-dev
-#     aptitude install libpango-1.0-0 -y && \
-#    aptitude install libpangocairo-1.0-0 -y && \
-#    aptitude install libpangoft2-1.0-0 -y   && \
-
-
 
 COPY sources.list /etc/apt/sources.list
 COPY Rprofile.gp.site ~/.Rprofile
@@ -37,5 +31,8 @@ RUN Rscript /build/source/install_stuff.R
 
 # the module files are set into /usr/local/bin/amaretto
 COPY src/* /usr/local/bin/amaretto/ 
+COPY src/mohsen_report_function.R /usr/local/bin/amaretto/mohsen_report_function.R
+COPY src/hyper_geo_test/HyperGTestGeneEnrichment.R /usr/local/bin/amaretto/hyper_geo_test/HyperGTestGeneEnrichment.R
+COPY src/hyper_geo_test/ProcessTCGA_modules.R  /usr/local/bin/amaretto/hyper_geo_test/ProcessTCGA_modules.R
 CMD ["Rscript", "/usr/local/bin/cogaps/run_gp_tutorial_module.R" ]
 

@@ -1,7 +1,7 @@
 #
 # #######  Generate all the gct files
 #
-#source("/Users/liefeld/GenePattern/gp_dev/docker/docker-amaretto/src/common.R")
+source("/Users/liefeld/GenePattern/gp_dev/docker/docker-amaretto/src/common.R")
 library(AMARETTO)
 TargetDirectory=getwd()
 
