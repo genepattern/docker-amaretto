@@ -2,8 +2,7 @@
 
 amaretto_html_report <- function(AMARETTOinit,AMARETTOresults,CNV_matrix,MET_matrix,hyper_geo_test_bool=TRUE)
 {
-    print("__A__pre", stderr())
-    library("AMARETTO")
+    suppressMessages(suppressWarnings(library("AMARETTO")))
     #file_wd=dirname(rstudioapi::getSourceEditorContext()$path)
     #setwd(file_wd)
     file_wd='./'
@@ -18,13 +17,11 @@ amaretto_html_report <- function(AMARETTOinit,AMARETTOresults,CNV_matrix,MET_mat
     NrModules<-AMARETTOresults$NrModules
     if (hyper_geo_test_bool)
       {
-      print("__A", stderr())
       saveRDS(AMARETTOresults, file = "hyper_geo_test/AMARETTOtestReport.RData")
       ########################################################
       # Save AMARETTO results in different formats including .gmt 
       ######################################################## 
-      print("A", stderr())
-      source("/usr/local/bin/amaretto/hyper_geo_test/ProcessTCGA_modules.R")
+      suppressMessages(suppressWarnings(source("/usr/local/bin/amaretto/hyper_geo_test/ProcessTCGA_modules.R")))
       rileen("/usr/local/bin/amaretto/hyper_geo_test/AMARETTOtestReport.RData", AMARETTOinit, AMARETTOresults)
       }
     ######################################################################################################################################################################################
@@ -41,7 +38,7 @@ amaretto_html_report <- function(AMARETTOinit,AMARETTOresults,CNV_matrix,MET_mat
     unlink("report_html/htmls/data/*")
     unlink("report_html/htmls/tables/*")
     unlink("report_html/htmls/tables/module_hyper_geo_test/*")
-    
+
     dir.create("report_html")
     dir.create("report_html/htmls")
     dir.create("report_html/htmls/images")
@@ -65,30 +62,25 @@ amaretto_html_report <- function(AMARETTOinit,AMARETTOresults,CNV_matrix,MET_mat
     ##############################################################################
     # Create HTMLs for each module
     ##############################################################################   
-    
+
     if (hyper_geo_test_bool)
     {
         ###################################################
         library("GSEABase")
         library("rstudioapi")
-        print("B", stderr())
-        source("/usr/local/bin/amaretto/hyper_geo_test/HyperGTestGeneEnrichment.R")
-         print("C", stderr())
-        source("/usr/local/bin/amaretto/hyper_geo_test/word_Cloud.R")
+        suppressMessages(suppressWarnings(source("/usr/local/bin/amaretto/hyper_geo_test/HyperGTestGeneEnrichment.R")))
+        suppressMessages(suppressWarnings(source("/usr/local/bin/amaretto/hyper_geo_test/word_Cloud.R")))
 
         b<- HyperGTestGeneEnrichment("/usr/local/bin/amaretto/hyper_geo_test/H.C2CP.genesets_forRileen.gmt", "/usr/local/bin/amaretto/hyper_geo_test/TCGA_modules_target_only.gmt", "hyper_geo_test/output.txt",show.overlapping.genes=TRUE)
-	print("D", stderr())
         df1<-read.table("hyper_geo_test/output.txt",sep="\t",header=TRUE, fill=TRUE)
         #df2<-df1[order(-df1$p.value),]
         df2=df1
-        print("E", stderr())
         df3<-read.table("hyper_geo_test/output.genes.txt",sep="\t",header=TRUE, fill=TRUE)
-        print(head(df3))
         ###################################################
+        print(head(df3))
     }
     
-    print("F", stderr())
-    
+
     library(R2HTML)
     
     number_of_significant_gene_overlappings<-c()
@@ -111,7 +103,6 @@ amaretto_html_report <- function(AMARETTOinit,AMARETTOresults,CNV_matrix,MET_mat
       module_all_genes_data <- unique(module_all_genes_data)
       module_annotations<-create_gene_annotations(module_all_genes_data,ModuleGenes,module_regulators_weights)
       
-     print("G", stderr()) 
       
       if (hyper_geo_test_bool)
       {

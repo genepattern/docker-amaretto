@@ -16,12 +16,8 @@
 suppressMessages(suppressWarnings(library(getopt)))
 suppressMessages(suppressWarnings(library(optparse)))
 suppressMessages(suppressWarnings(library(AMARETTO)))
-
-source('/usr/local/bin/amaretto/mohsen_report_function.R')
-print("loading Mohsens code")
-print("this goes to stderr ", stderr())
-source('/usr/local/bin/amaretto/hyper_geo_test/read_gct.R')
-
+suppressMessages(suppressWarnings(source('/usr/local/bin/amaretto/mohsen_report_function.R')))
+suppressMessages(suppressWarnings(source('/usr/local/bin/amaretto/hyper_geo_test/read_gct.R')))
 
 # Print the sessionInfo so that there is a listing of loaded packages, 
 # the current version of R, and other environmental information in our
@@ -75,7 +71,6 @@ patternRange <- seq(1,number.of.modules)
 
 
 # Load the GCT input file2.
-print("Loading gct files now")
 if (!file.exists(opts$expression.file)){
      print("Expression file does not exist")
 }
@@ -91,15 +86,19 @@ if (!file.exists(opts$methylation.file)){
 }
 gct_meth <- read.gct(opts$methylation.file)
 
-
-AMARETTOinit = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,percent.genes)
+#
+# Driver list - if provided neglects MET and/or CNV data
+#    Su-In Lee or MSigDB or allow user to provide a file
+# If CNV/MET and a list provided, can use generated, provided, or intersection of both
+#
+AMARETTOinit = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,percent.genes, Driver_list = NULL)
 AMARETTOresults = AMARETTO_Run(AMARETTOinit)
 
 dirName="."
 
 for (modNum in patternRange)
 {
-	pdf( paste(opts$output.file,"_module_", modNum, ".pdf"))
+	pdf( paste(opts$output.file,"_module_", modNum, ".pdf", sep = " "))
 	print(AMARETTO_VisualizeModule(AMARETTOinit,AMARETTOresults,gct_cn$data,gct_meth$data,ModuleNr=modNum))
 	dev.off()
 }
@@ -120,5 +119,17 @@ for(res_file in gctFiles)
 }
 
 dir.create("hyper_geo_test")
-print("Starting report ", stderr())
 res <- amaretto_html_report( AMARETTOinit, AMARETTOresults, gct_cn$data, gct_meth$data, TRUE)
+
+# copy the tsv files to the top for easy acccess in the notebook
+# report_html/htmls/tables/module_hyper_geo_test/
+
+flist2 <- list.files("report_html/htmls/tables/module_hyper_geo_test/",  full.names = TRUE)
+file.copy(flist2, ".")
+
+unlink("report_html", recursive = TRUE)
+
+
+
+
+

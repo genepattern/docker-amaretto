@@ -37,7 +37,7 @@ colnames(in_module)<-unlist(lapply(colnames(in_module),paste0,"_B"))
 annotation<-cbind(annotation,in_module)
 
 
-gmt_file="hyper_geo_test/TCGA_modules_target_only.gmt"
+gmt_file="/usr/local/bin/amaretto/hyper_geo_test/TCGA_modules_target_only.gmt"
 for(i in 1:dim(module_weights)[2]){
   genes<-rownames(in_module)[which(module_weights[,i]==1)]
   if(i==1){

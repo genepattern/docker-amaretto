@@ -1,5 +1,6 @@
 readGMT<-function (filename) 
 {
+    message("Looking for GMT ", filename)
     a = scan(filename, what = list("", ""), sep = "\t", quote = NULL, 
         fill = T, flush = T, multi.line = F,strip.white = TRUE)
     geneset.names = a[1][[1]]
