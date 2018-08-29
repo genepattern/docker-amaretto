@@ -39,7 +39,10 @@ option_list <- list(
   make_option("--methylation.file", dest="methylation.file"),
   make_option("--output.file", dest="output.file"),
   make_option("--percent.genes", type="integer", dest="percent.genes"),
-  make_option("--number.of.modules", type="integer", dest="number.of.modules")
+  make_option("--number.of.modules", type="integer", dest="number.of.modules"),
+  make_option("--driver.gene.list", dest="driver.gene.list"),
+  make_option("--driver.gene.list.file", dest="driver.gene.list.file"),
+  make_option("--driver.gene.list.selection.mode", dest="driver.gene.list.selection.mode")
   )
 
 # Parse the command line arguments with the option list, printing the result
@@ -66,6 +69,36 @@ if (is.null(opts$number.of.modules) || is.na(opts$number.of.modules)) {
    number.of.modules <- strtoi(opts$number.of.modules)
 }
 
+#
+# if driver gene list selection mode != computed, we need to specify the list and/or load a file
+#
+intersect = FALSE
+igeneListName = NULL
+
+if (opts$driver.gene.list.selection.mode == "computed") {
+   geneListName = NULL
+} else {
+    if (file.exists(opts$gene.list.file)){
+        geneListName = NULL
+        stop("Using a driver gene list from file is not yet supported.")   
+    } else {
+       # to avoid problems with escaping the space in the name
+       if (opts$driver.gene.list == "su-in-lee"){
+           geneListName="Su-in Lee"
+       } else {
+           geneListName = opts$driver.gene.list
+       }
+        
+    }
+
+    intersect = opts$driver.gene.list.selection.mode == "intersect"
+    if (intersect == TRUE){
+        
+        stop("Driver gene list intersection not yet supported")
+    }
+   # for now to get here we have selected a list but not a file, and have not chosen to intersect
+   #  -- this is until the code catches up 
+}
 
 patternRange <- seq(1,number.of.modules)
 
@@ -91,7 +124,7 @@ gct_meth <- read.gct(opts$methylation.file)
 #    Su-In Lee or MSigDB or allow user to provide a file
 # If CNV/MET and a list provided, can use generated, provided, or intersection of both
 #
-AMARETTOinit = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,percent.genes, Driver_list = NULL)
+AMARETTOinit = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,percent.genes, Driver_list = geneListName)
 AMARETTOresults = AMARETTO_Run(AMARETTOinit)
 
 dirName="."

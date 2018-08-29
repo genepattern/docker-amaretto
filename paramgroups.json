@@ -1,0 +1,9 @@
+[{name: "Input data", 
+  parameters: ["expression.file", "copy.number.file", "methylation.file"]}, 
+{name: "Basic parameters", hidden: false, 
+  parameters: ["number.of.modules", "percent.genes", "output.file"]},
+
+  {name: "Driver Gene List", hidden: false,
+     parameters: ["driver.gene.list", "driver.gene.list.file", "driver.gene.list.selection.mode"]},
+
+]
