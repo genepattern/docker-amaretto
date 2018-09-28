@@ -27,22 +27,21 @@ ENV R_LIBS_S3=/genepattern-server/Rlibraries/R344/rlibs
 ENV R_LIBS=/usr/local/lib/R/site-library
 ENV R_HOME=/usr/local/lib64/R
 COPY install_stuff.R /build/source/install_stuff.R
-#  COPY AMARETTO_0.99.1.tar.gz  /usr/local/bin/AMARETTO_0.99.1.tar.gz
-#  RUN Rscript /build/source/install_stuff.R
 
 RUN mkdir /source && \
    cd /source && \
    git clone https://github.com/gevaertlab/AMARETTO.git && \
    cd AMARETTO && \
    git checkout develop
-   
+
+# install_stuff.R builds and installs AMARETTO from source along with its dependencies   
 RUN Rscript /build/source/install_stuff.R 
 
 # the module files are set into /usr/local/bin/amaretto
 COPY src/* /usr/local/bin/amaretto/ 
 COPY src/hyper_geo_test/* /usr/local/bin/amaretto/hyper_geo_test/
 COPY src/mohsen_report_function.R /usr/local/bin/amaretto/mohsen_report_function.R
-COPY src/hyper_geo_test/HyperGTestGeneEnrichment.R /usr/local/bin/amaretto/hyper_geo_test/HyperGTestGeneEnrichment.R
-COPY src/hyper_geo_test/ProcessTCGA_modules.R  /usr/local/bin/amaretto/hyper_geo_test/ProcessTCGA_modules.R
+#COPY src/hyper_geo_test/HyperGTestGeneEnrichment.R /usr/local/bin/amaretto/hyper_geo_test/HyperGTestGeneEnrichment.R
+#COPY src/hyper_geo_test/ProcessTCGA_modules.R  /usr/local/bin/amaretto/hyper_geo_test/ProcessTCGA_modules.R
 CMD ["Rscript", "/usr/local/bin/cogaps/run_gp_tutorial_module.R" ]
 

@@ -4,16 +4,19 @@ JVMLevel=
 LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00378\:999999999
 author=Olivier Gevaert, Stanford University, wrapped as a module by Ted Liefeld, UCSD School of Medicine.
 categories=SingleCell
-commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/amaretto/run_amaretto_module.R  --expression.file\=<expression.file> --copy.number.file\=<copy.number.file> --methylation.file\=<methylation.file> --output.file\=<output.file> --percent.genes\=<percent.genes> --number.of.modules\=<number.of.modules> --driver.gene.list\=<driver.gene.list> --driver.gene.list.file\=<driver.gene.list.file> --driver.gene.list.selection.mode=<driver.gene.list.selection.mode>
+commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/amaretto/run_amaretto_module.R  --expression.file\=<expression.file> --copy.number.file\=<copy.number.file> --methylation.file\=<methylation.file> --output.file\=<output.file> --percent.genes\=<percent.genes> --number.of.modules\=<number.of.modules> --driver.gene.list\=<driver.gene.list> --driver.gene.list.file\=<driver.gene.list.file> --driver.gene.list.selection.mode=<driver.gene.list.selection.mode> --num.cpu=<job.cpuCount>
 
 cpuType=any
-description=Run common single cell analysis including differential expression, downsampling analysis, and clustering.
+description=Discovery of driver genes using epigenomic, genomic and transcriptomic data using module networks with penalized regression. 
 fileFormat=gct
 language=any
 minGenePatternVersion=3.9.13
 name=Amaretto
 os=any
-job.docker.image=genepattern/docker-amaretto\:0.21
+#job.docker.image=genepattern/docker-amaretto\:0.21
+job.docker.image=genepattern/docker-amaretto:develop
+
+job.cpuCount=4
 
 p1_MODE=IN
 p1_TYPE=FILE
@@ -119,14 +122,14 @@ p7_value=
 
 p8_flag=
 p8_name=driver.gene.list
-p8_description=Precomputed list of driver genes to use instead of or in addition to the list computed from CNV and/or Methylation data
+p8_description=Predefined list of driver genes to use instead of or in addition to the list computed from CNV and/or Methylation data in a text file, one gene per line.
 p8_numValues=1..1
 p8_optional=
 p8_prefix=
 p8_prefix_when_specified=
 p8_type=java.lang.String
 p8_value=MSigDB\=MSigDB driver genes;su-in-lee\=Su-in Lee list of driver genes 
-p8_defaultValue=msigdb
+p8_default_value=MSigDB
 
 
 p9_flag=
@@ -137,8 +140,8 @@ p9_optional=
 p9_prefix=
 p9_prefix_when_specified=
 p9_type=java.lang.String
-p9_value=computed\=Use list computed from CNV/MET data;predefined\=Use predefined list;intersect\=Compute and intersect with predefined list
- 
+p9_value=computed\=Use list computed from CNV/MET data;predefined\=Use predefined list;intersect\=Compute and intersect with predefined list;union\=Compute and union with predefined list
+p9_default_value= 
 
 
 privacy=public
