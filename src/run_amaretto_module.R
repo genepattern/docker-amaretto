@@ -124,13 +124,7 @@ if (!file.exists(opts$methylation.file)){
 gct_meth <- read.gct(opts$methylation.file)
 
 # num.cpu is the full number allocated to the container.  If there are a few, we take one off the top for the OS/Container itself to avoid thrashing
-NrCores = as.integer( 1.5 * opts$num.cpu)
-#if (opts$num.cpu > 3) {
-#   NrCores = opts$num.cpu - 1
-#} else {
-#   NrCores = opts$num.cpu
-#}
-
+NrCores = as.integer( 1 * opts$num.cpu)
 
 #
 # Driver list - if provided neglects MET and/or CNV data
