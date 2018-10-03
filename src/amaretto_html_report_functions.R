@@ -785,7 +785,7 @@ HyperGTestGeneEnrichment<-function(gmtfile,testgmtfile,outfile,n_cluster,show.ov
   #MSigDB 45956
   ref.num<-45956
   
-  all_genes<-scan("hyper_geo_test/all_genes.txt", what="", sep="\n")
+  all_genes<-scan("/usr/local/bin/amaretto/hyper_geo_test/all_genes.txt", what="", sep="\n")
   #ref.num<-length(all_genes)
   
   # gmtfile<-args[1]     #signature collection
@@ -913,7 +913,7 @@ HyperGTestGeneEnrichment_serial<-function(gmtfile,testgmtfile,outfile,show.overl
   #MSigDB 45956
   ref.num<-45956
   
-  all_genes<-scan("hyper_geo_test/all_genes.txt", what="", sep="\n")
+  all_genes<-scan("/usr/local/bin/amaretto/hyper_geo_test/all_genes.txt", what="", sep="\n")
 
   if(show.overlapping.genes){
     
