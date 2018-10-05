@@ -2,6 +2,7 @@
 
 amaretto_html_report <- function(AMARETTOinit,AMARETTOresults,CNV_matrix,MET_matrix,hyper_geo_test_bool=TRUE)
 {
+
     suppressMessages(suppressWarnings(library("AMARETTO")))
     #file_wd=dirname(rstudioapi::getSourceEditorContext()$path)
     #setwd(file_wd)

@@ -16,6 +16,8 @@
 suppressMessages(suppressWarnings(library(getopt)))
 suppressMessages(suppressWarnings(library(optparse)))
 suppressMessages(suppressWarnings(library(AMARETTO)))
+suppressMessages(suppressWarnings(library(tibble)))
+suppressMessages(suppressWarnings(library(plyr)))
 
 # suppressMessages(suppressWarnings(source('/usr/local/bin/amaretto/mohsen_report_function.R')))
 # suppressMessages(suppressWarnings(source('/usr/local/bin/amaretto/hyper_geo_test/read_gct.R')))
@@ -28,6 +30,23 @@ suppressMessages(suppressWarnings(source('/usr/local/bin/amaretto/amaretto_html_
 # stdout file.  This can be useful for reproducibility, troubleshooting
 # and comparing between runs.
 sessionInfo()
+suppressMessages(suppressWarnings(library('svglite')))
+suppressMessages(suppressWarnings(library(R2HTML)))
+suppressMessages(suppressWarnings(library("GSEABase")))
+suppressMessages(suppressWarnings(library("rstudioapi")))
+suppressMessages(suppressWarnings(library(foreach)))
+suppressMessages(suppressWarnings(library(doParallel)))
+suppressMessages(suppressWarnings(require("tm")))
+suppressMessages(suppressWarnings(require("SnowballC")))
+require("wordcloud")
+require("RColorBrewer")
+require(plyr)
+
+print("AMARETTO VISuALIZE MODULE Loaded")
+print(environment(AMARETTO_VisualizeModule))
+print(environment(AMARETTO::AMARETTO_VisualizeModule))
+print(environment())
+print("++++++========")
 
 # Get the command line arguments.  We'll process these with optparse.
 # https://cran.r-project.org/web/packages/optparse/index.html
@@ -58,7 +77,7 @@ opts <- opt$options
 # Load some common GP utility code for handling GCT files and so on.  This is included
 # with the module and so it will be found in the same location as this script (libdir).
 source(file.path("/usr/local/bin/amaretto/", "common.R"))
-source(file.path("/usr/local/bin/amaretto/","AMARETTO_VisualizeModulePatch_0.99.2.R"))
+#source(file.path("/usr/local/bin/amaretto/","AMARETTO_VisualizeModulePatch_0.99.2.R"))
 
 # Optparse will validate increment.value and convert it to a numeric value or give it the
 # default value of 10 if missing.  We must check for NA however (and NULL, to be safe) as

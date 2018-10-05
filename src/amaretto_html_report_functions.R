@@ -1,10 +1,28 @@
 ##################################  HTML Report Functions
+
+#library("AMARETTO")
+#suppressMessages(suppressWarnings(library('svglite')))
+#suppressMessages(suppressWarnings(library(R2HTML)))
+#suppressMessages(suppressWarnings(library("GSEABase")))
+#suppressMessages(suppressWarnings(library("rstudioapi")))
+#suppressMessages(suppressWarnings(library(foreach)))
+#suppressMessages(suppressWarnings(library(doParallel)))
+#require("tm")
+#require("SnowballC")
+#require("wordcloud")
+#require("RColorBrewer")
+#require(plyr)
+
+
+
 amaretto_html_report <- function(AMARETTOinit,AMARETTOresults,CNV_matrix,MET_matrix,VarPercentage,hyper_geo_test_bool=TRUE,n_cluster=AMARETTOinit$NrCores,hyper_geo_reference_geneset_address='hyper_geo_test/H.C2CP.genesets.gmt',wordcloud_bool=FALSE)
 {
     set.seed(1234)
-    library("AMARETTO")
-    library('svglite')
-    library(R2HTML)
+    #detach("package:AMARETTO", unload=TRUE)
+    #rm(AMARETTO_VisualizeModule)
+    #library("AMARETTO")
+    #suppressMessages(suppressWarnings(library('svglite')))
+    #suppressMessages(suppressWarnings(library(R2HTML)))
     file_wd='./'
     setwd(file_wd)
    
@@ -39,7 +57,14 @@ amaretto_html_report <- function(AMARETTOinit,AMARETTOresults,CNV_matrix,MET_mat
     {
       html_address=paste("report_html","/htmls/images","/module",as.character(ModuleNr),".svg",sep="")
       svglite(file =html_address)
-      AMARETTO_VisualizeModule(AMARETTOinit, AMARETTOresults=AMARETTOresults, CNV_matrix, MET_matrix, ModuleNr=ModuleNr) 
+      print("AMARETTO VISuALIZE MODULE CALLED")
+      print(environment(AMARETTO_VisualizeModule))
+      print(environment(AMARETTO::AMARETTO_VisualizeModule))
+      print(environment())
+      print("++++++========")
+      sessionInfo()
+
+      AMARETTO::AMARETTO_VisualizeModule(AMARETTOinit, AMARETTOresults=AMARETTOresults, CNV_matrix, MET_matrix, ModuleNr=ModuleNr) 
       dev.off()
     }
     ##############################################################################
@@ -47,8 +72,8 @@ amaretto_html_report <- function(AMARETTOinit,AMARETTOresults,CNV_matrix,MET_mat
     ##############################################################################   
     if (hyper_geo_test_bool)
     {
-        library("GSEABase")
-        library("rstudioapi")
+        #suppressMessages(suppressWarnings(library("GSEABase")))
+        #suppressMessages(suppressWarnings(library("rstudioapi")))
         processTCGA_modules(AMARETTOinit,AMARETTOresults)
         b<- HyperGTestGeneEnrichment(hyper_geo_reference_geneset_address, "hyper_geo_test/TCGA_modules_target_only.gmt", "hyper_geo_test/output.txt",n_cluster,show.overlapping.genes=TRUE)
         df3<-read.delim("hyper_geo_test/output.genes.txt", header=TRUE, sep="\t")
@@ -647,10 +672,10 @@ wordcloud_making<-function(text1,file_name){
   # install.packages("wordcloud") # word-cloud generator 
   # install.packages("RColorBrewer") # color palettes
 
-  require("tm")
-  require("SnowballC")
-  require("wordcloud")
-  require("RColorBrewer")
+  #require("tm")
+  #require("SnowballC")
+  #require("wordcloud")
+  #require("RColorBrewer")
   
   text1<-as.character(text1)
   Encoding(text1) <- 'UTF-8'
@@ -754,8 +779,8 @@ processTCGA_modules <- function(AMARETTOinit,AMARETTOresults){
 HyperGTestGeneEnrichment<-function(gmtfile,testgmtfile,outfile,n_cluster,show.overlapping.genes=FALSE,filter.genes=TRUE,show.unrecognized=FALSE)
   
 {
-  library(GSEABase)
-  require(plyr)
+  #suppressMessages(suppressWarnings(library(GSEABase)))
+  #require(plyr)
 
   
   
@@ -816,8 +841,8 @@ HyperGTestGeneEnrichment<-function(gmtfile,testgmtfile,outfile,n_cluster,show.ov
   n.cluster <- n_cluster
   cl2 <- makeCluster(c(rep("localhost", n.cluster)), type = "SOCK")
   cluster = cl2
-  library(foreach)
-  library(doParallel)
+  #suppressMessages(suppressWarnings(library(foreach)))
+  #suppressMessages(suppressWarnings(library(doParallel)))
   registerDoParallel(cores=n.cluster )
   getDoParWorkers()
   
@@ -885,8 +910,8 @@ HyperGTestGeneEnrichment<-function(gmtfile,testgmtfile,outfile,n_cluster,show.ov
 HyperGTestGeneEnrichment_serial<-function(gmtfile,testgmtfile,outfile,show.overlapping.genes=FALSE,filter.genes=TRUE,show.unrecognized=FALSE )
   
 {
-  library(GSEABase)
-  require(plyr)
+  #suppressMessages(suppressWarnings(library(GSEABase)))
+  #require(plyr)
 
   # 
   # ## Help section
