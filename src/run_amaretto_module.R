@@ -19,12 +19,6 @@ suppressMessages(suppressWarnings(library(AMARETTO)))
 suppressMessages(suppressWarnings(library(tibble)))
 suppressMessages(suppressWarnings(library(plyr)))
 
-# suppressMessages(suppressWarnings(source('/usr/local/bin/amaretto/mohsen_report_function.R')))
-# suppressMessages(suppressWarnings(source('/usr/local/bin/amaretto/hyper_geo_test/read_gct.R')))
-#
-# replace above 2 lines with the following after refactoring
-suppressMessages(suppressWarnings(source('/usr/local/bin/amaretto/amaretto_html_report_functions.R')))
-
 # Print the sessionInfo so that there is a listing of loaded packages, 
 # the current version of R, and other environmental information in our
 # stdout file.  This can be useful for reproducibility, troubleshooting
@@ -38,15 +32,25 @@ suppressMessages(suppressWarnings(library(foreach)))
 suppressMessages(suppressWarnings(library(doParallel)))
 suppressMessages(suppressWarnings(require("tm")))
 suppressMessages(suppressWarnings(require("SnowballC")))
-require("wordcloud")
-require("RColorBrewer")
-require(plyr)
+suppressMessages(suppressWarnings(require("wordcloud")))
+suppressMessages(suppressWarnings(require("RColorBrewer")))
+suppressMessages(suppressWarnings(require(plyr)))
 
-print("AMARETTO VISuALIZE MODULE Loaded")
-print(environment(AMARETTO_VisualizeModule))
-print(environment(AMARETTO::AMARETTO_VisualizeModule))
-print(environment())
-print("++++++========")
+##################
+#
+# XXX Temp workaround - we need to copy /usr/local/bin/amaretto/hyper_geo_test/all_genes.txt
+# to a hyper_geo_test directory under the $PWD.  Why this is not checked into the AMARETTO
+# github until it is not needed anymore (some day they say) is a mystery to me.
+#
+#################
+dir.create('./hyper_geo_test')
+file.copy('/usr/local/bin/amaretto/hyper_geo_test/all_genes.txt', './hyper_geo_test/all_genes.txt')
+file.copy('/usr/local/bin/amaretto/hyper_geo_test/H.C2CP.genesets.gmt', './hyper_geo_test/H.C2CP.genesets.gmt')
+################
+#
+# XXX end of Temp Workaround 
+#
+###############
 
 # Get the command line arguments.  We'll process these with optparse.
 # https://cran.r-project.org/web/packages/optparse/index.html
@@ -98,29 +102,42 @@ if (is.null(opts$number.of.modules) || is.na(opts$number.of.modules)) {
 #
 intersect = FALSE
 geneList = NULL
+gene_list_combination_method = NULL
 
 if (opts$driver.gene.list.selection.mode == "computed") {
+   # just compute and ignore any passed in or predefined gene lists
    geneList = NULL
+   gene_list_combination_method = NULL
 } else {
-    if (file.exists(opts$gene.list.file)){
-	geneList = readLines(opts$gene.list.file)
-    } else {
-       # to avoid problems with escaping the space in the name
-       if (opts$driver.gene.list == "su-in-lee"){
-           geneList = readLines("/usr/local/bin/amaretto/Su-in_Lee-RegulatorsList.txt")
-       } else if (opts$driver.gene.list == "MSigDB") {
-           geneList = readLines("/usr/local/bin/amaretto/MSigDBGeneFamilies.txt")
-       }
-        
+    # for predefined, union and intersect we need a list
+    # if a file was provided, thats the predefined list.  If not, use the driver.gene.list dropdown
+    # to pick one of the preset lists 
+    
+    if ((!is.null(opts$driver.gene.list.file))){
+        if (file.exists(opts$driver.gene.list.file)){
+ 			geneList = readLines(opts$driver.gene.list.file)
+ 		}
+	}	
+		
+    
+    if (is.null(geneList)) {
+     
+		# get the preformed gene lists.  They use names that match what is passed in except for "Su-In Lee" which 
+        # has problematic spaces in the name
+		data(Driver_Genes)
+		x = names(Driver_Genes)
+		x[1] = 'su-in-lee'
+		names(Driver_Genes) <- x
+	    geneList = Driver_Genes[opts$driver.gene.list][]
     }
-
-    intersect = opts$driver.gene.list.selection.mode == "intersect"
-    if (intersect == TRUE){
-        
-        stop("Driver gene list intersection not yet supported")
+    
+    if (opts$driver.gene.list.selection.mode == "predefined"){
+         gene_list_combination_method = NULL
+    } else if (opts$driver.gene.list.selection.mode == "intersect"){
+         gene_list_combination_method =  "intersect"     
+    } else if (opts$driver.gene.list.selection.mode == "union"){
+         gene_list_combination_method = "union"
     }
-   # for now to get here we have selected a list but not a file, and have not chosen to intersect
-   #  -- this is until the code catches up 
 }
 
 patternRange <- seq(1,number.of.modules)
@@ -150,7 +167,12 @@ NrCores = as.integer( 1 * opts$num.cpu)
 #    Su-In Lee or MSigDB or allow user to provide a file
 # If CNV/MET and a list provided, can use generated, provided, or intersection of both
 #
-AMARETTOinit = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,percent.genes, Driver_list = geneList, NrCores = NrCores)
+print("===== gene list following ==== ")
+print(geneList)
+print("===== gene combo method following ==== ")
+print(gene_list_combination_method)
+
+AMARETTOinit = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,percent.genes, Driver_list = geneList, NrCores = NrCores, method = gene_list_combination_method)
 AMARETTOresults = AMARETTO_Run(AMARETTOinit)
 
 dirName="."
@@ -180,9 +202,13 @@ dirName="."
 #    write.gct(gct, file.path(getwd(),paste(res_file,"_amaretto.gct",sep = "")))
 #}
 
+# New output file for Community-amaretto follow on module
+print(paste("About to save results ", file.path(getwd(),paste(opts$output.file,".RData",sep = ""))))
+save(AMARETTOresults, file=file.path(getwd(),paste(opts$output.file,".RData",sep = "")))
+
 dir.create("hyper_geo_test")
 
-res<-amaretto_html_report(AMARETTOinit,AMARETTOresults,gct_cn$data, gct_meth$data,percent.genes,hyper_geo_test_bool=TRUE,n_cluster=NrCores,hyper_geo_reference_geneset_address='/usr/local/bin/amaretto/hyper_geo_test/H.C2CP.genesets.gmt',wordcloud_bool=FALSE)
+res<-amaretto_html_report(AMARETTOinit,AMARETTOresults,gct_cn$data, gct_meth$data,percent.genes,hyper_geo_test_bool=TRUE,n_cluster=NrCores,wordcloud_bool=FALSE)
 
 
 # copy the tsv files to the top for easy acccess in the notebook
