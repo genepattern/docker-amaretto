@@ -102,12 +102,12 @@ if (is.null(opts$number.of.modules) || is.na(opts$number.of.modules)) {
 #
 intersect = FALSE
 geneList = NULL
-gene_list_combination_method = NULL
+gene_list_combination_method = "union"
 
 if (opts$driver.gene.list.selection.mode == "computed") {
    # just compute and ignore any passed in or predefined gene lists
    geneList = NULL
-   gene_list_combination_method = NULL
+   gene_list_combination_method = "union"
 } else {
     # for predefined, union and intersect we need a list
     # if a file was provided, thats the predefined list.  If not, use the driver.gene.list dropdown
@@ -122,17 +122,17 @@ if (opts$driver.gene.list.selection.mode == "computed") {
     
     if (is.null(geneList)) {
      
-		# get the preformed gene lists.  They use names that match what is passed in except for "Su-In Lee" which 
+	# get the preformed gene lists.  They use names that match what is passed in except for "Su-In Lee" which 
         # has problematic spaces in the name
-		data(Driver_Genes)
-		x = names(Driver_Genes)
-		x[1] = 'su-in-lee'
-		names(Driver_Genes) <- x
-	    geneList = Driver_Genes[opts$driver.gene.list][]
+	data(Driver_Genes)
+	x = names(Driver_Genes)
+	x[1] = 'su-in-lee'
+	names(Driver_Genes) <- x
+       geneList = Driver_Genes[opts$driver.gene.list][]
     }
     
     if (opts$driver.gene.list.selection.mode == "predefined"){
-         gene_list_combination_method = NULL
+         gene_list_combination_method = "union"
     } else if (opts$driver.gene.list.selection.mode == "intersect"){
          gene_list_combination_method =  "intersect"     
     } else if (opts$driver.gene.list.selection.mode == "union"){
@@ -167,10 +167,10 @@ NrCores = as.integer( 1 * opts$num.cpu)
 #    Su-In Lee or MSigDB or allow user to provide a file
 # If CNV/MET and a list provided, can use generated, provided, or intersection of both
 #
-print("===== gene list following ==== ")
-print(geneList)
-print("===== gene combo method following ==== ")
-print(gene_list_combination_method)
+#print("===== gene list following ==== ")
+#print(geneList)
+#print("===== gene combo method following ==== ")
+#print(gene_list_combination_method)
 
 AMARETTOinit = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,percent.genes, Driver_list = geneList, NrCores = NrCores, method = gene_list_combination_method)
 AMARETTOresults = AMARETTO_Run(AMARETTOinit)
@@ -217,6 +217,7 @@ res<-amaretto_html_report(AMARETTOinit,AMARETTOresults,gct_cn$data, gct_meth$dat
 #file.copy(flist2, ".")
 
 #unlink("report_html", recursive = TRUE)
+unlink('hyper_geo_test', recursive = TRUE)
 
 
 
