@@ -13,7 +13,7 @@ language=any
 minGenePatternVersion=3.9.13
 name=Amaretto
 os=any
-job.docker.image=genepattern/docker-amaretto\:0.4
+job.docker.image=genepattern/docker-amaretto\:0.41
 #job.docker.image=genepattern/docker-amaretto:develop
 
 job.cpuCount=4
