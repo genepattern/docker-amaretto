@@ -115,7 +115,7 @@ if (opts$driver.gene.list.selection.mode == "computed") {
     
     if ((!is.null(opts$driver.gene.list.file))){
         if (file.exists(opts$driver.gene.list.file)){
- 			geneList = readLines(opts$driver.gene.list.file)
+ 			geneList = as.character(read.delim(opts$driver.gene.list.file)$V1)
  		}
 	}	
 		
@@ -128,7 +128,7 @@ if (opts$driver.gene.list.selection.mode == "computed") {
 	x = names(Driver_Genes)
 	x[1] = 'su-in-lee'
 	names(Driver_Genes) <- x
-       geneList = Driver_Genes[opts$driver.gene.list][]
+        geneList = Driver_Genes[[opts$driver.gene.list]]
     }
     
     if (opts$driver.gene.list.selection.mode == "predefined"){
@@ -167,10 +167,10 @@ NrCores = as.integer( 1 * opts$num.cpu)
 #    Su-In Lee or MSigDB or allow user to provide a file
 # If CNV/MET and a list provided, can use generated, provided, or intersection of both
 #
-#print("===== gene list following ==== ")
-#print(geneList)
-#print("===== gene combo method following ==== ")
-#print(gene_list_combination_method)
+print("===== gene list following ==== ")
+print(str(length(geneList)))
+print("===== gene combo method following ==== ")
+print(gene_list_combination_method)
 
 AMARETTOinit = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,percent.genes, Driver_list = geneList, NrCores = NrCores, method = gene_list_combination_method)
 AMARETTOresults = AMARETTO_Run(AMARETTOinit)

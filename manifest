@@ -1,7 +1,7 @@
 #Mon, 27 Aug 2018 11:23:51 -0700
 #Mon Jun 18 21:02:09 UTC 2018
 JVMLevel=
-LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00378\:999999999
+LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00378\:0.042
 author=Olivier Gevaert, Stanford University, wrapped as a module by Ted Liefeld, UCSD School of Medicine.
 categories=SingleCell
 commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/amaretto/run_amaretto_module.R  --expression.file\=<expression.file> --copy.number.file\=<copy.number.file> --methylation.file\=<methylation.file> --output.file\=<output.file> --percent.genes\=<percent.genes> --number.of.modules\=<number.of.modules> --driver.gene.list\=<driver.gene.list> --driver.gene.list.file\=<driver.gene.list.file> --driver.gene.list.selection.mode=<driver.gene.list.selection.mode> --num.cpu=<job.cpuCount>
@@ -13,7 +13,7 @@ language=any
 minGenePatternVersion=3.9.13
 name=Amaretto
 os=any
-job.docker.image=genepattern/docker-amaretto\:0.41
+job.docker.image=genepattern/docker-amaretto\:0.42
 #job.docker.image=genepattern/docker-amaretto:develop
 
 job.cpuCount=4

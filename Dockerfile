@@ -30,7 +30,7 @@ RUN apt-get update && apt-get upgrade -t unstable --yes && \
 
 RUN   mkdir /source && \
    cd /source && \
-   echo "Ai change to force rebuild" && \
+   echo "Aii change to force rebuild" && \
    git clone https://github.com/gevaertlab/AMARETTO.git && \
    cd AMARETTO && \
    git checkout develop 
