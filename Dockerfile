@@ -1,6 +1,6 @@
 # copyright 2017-2018 Regents of the University of California and the Broad Institute. All rights reserved.
 
-FROM r-base:3.5.0
+FROM r-base:3.5.1
 
 RUN mkdir /build
 
@@ -28,9 +28,12 @@ ENV R_LIBS=/usr/local/lib/R/site-library
 RUN apt-get update && apt-get upgrade -t unstable --yes && \
    apt-get install -t unstable  libv8-3.14-dev --yes 
 
-RUN   mkdir /source && \
+RUN   mkdir /source1 && \
+   mv /source1 /source && \
    cd /source && \
-   echo "Aii change to force rebuild" && \
+   echo "Cii" && \
+   wget https://install-github.me/r-lib/callr && \
+   mv callr callr.R && \
    git clone https://github.com/gevaertlab/AMARETTO.git && \
    cd AMARETTO && \
    git checkout develop 
