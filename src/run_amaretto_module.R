@@ -54,8 +54,12 @@ option_list <- list(
   make_option("--driver.gene.list", dest="driver.gene.list"),
   make_option("--driver.gene.list.file", dest="driver.gene.list.file"),
   make_option("--driver.gene.list.selection.mode", dest="driver.gene.list.selection.mode"),
-  make_option("--num.cpu", type="integer", dest="num.cpu")
+  make_option("--num.cpu", type="integer", dest="num.cpu"),
+  make_option("--hyper.geo.ref.file", dest="hyper.geo.ref.file"),
+  make_option("--from.msigdb", type="logical", dest="from.msigdb"),
+  make_option("--gmt.url.present", type="logical", dest="gmt.url.present")
   )
+
 
 # Parse the command line arguments with the option list, printing the result
 # to give a record as with sessionInfo.
@@ -124,6 +128,29 @@ if (opts$driver.gene.list.selection.mode == "computed") {
     }
 }
 
+hyper.geo.ref = NULL
+from.msigdb = TRUE
+gmt.url.present = FALSE
+
+if ((!is.null(opts$hyper.geo.ref.file))){
+        if (file.exists(opts$hyper.geo.ref.file)){
+             hyper.geo.ref = as.character(read.delim(opts$hyper.geo.ref.file)$V1)
+             from.msigdb=opts$from.msigdb
+             gmt.url.present=opts$gmt.url.present
+        } else {
+             print("Hyper geo ref file does not exist")
+             hyper.geo.ref="/source/AMARETTO/inst/templates/H.C2CP.genesets.gmt"
+             from.msigdb=TRUE
+             gmt.url.present=FALSE
+        }
+} else {
+	hyper.geo.ref="/source/AMARETTO/inst/templates/H.C2CP.genesets.gmt"
+        from.msigdb=TRUE
+        gmt.url.present=FALSE 
+}     
+
+
+
 patternRange <- seq(1,number.of.modules)
 
 
@@ -143,7 +170,7 @@ if (!file.exists(opts$methylation.file)){
 }
 gct_meth <- read.gct(opts$methylation.file)
 
-AMARETTOinit = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,VarPercentage = percent.genes, Driver_list = geneList, NrCores = NrCores, method = gene_list_combination_method)
+AMARETTOinit = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,VarPercentage = percent.genes, Driver_list = geneList,  method = gene_list_combination_method)
 AMARETTOresults = AMARETTO_Run(AMARETTOinit)
 
 
@@ -152,9 +179,9 @@ AMARETTOresults = AMARETTO_Run(AMARETTOinit)
 AMARETTO_ExportResults(AMARETTOinit, AMARETTOresults, ".", Heatmaps = FALSE)
 
 
-gmt_file<-"/source/AMARETTO/inst/templates/H.C2CP.genesets.gmt"
+# gmt_file<-"/source/AMARETTO/inst/templates/H.C2CP.genesets.gmt"
 
-AMARETTO_HTMLreport(AMARETTOinit,AMARETTOresults,CNV_matrix=gct_cn$data, MET_matrix=gct_meth$data, VarPercentage=percent.genes, hyper_geo_test_bool=TRUE, hyper_geo_reference=gmt_file, MSIGDB=TRUE, GMTURL=FALSE, output_address='./')
+AMARETTO_HTMLreport(AMARETTOinit,AMARETTOresults,CNV_matrix=gct_cn$data, MET_matrix=gct_meth$data, VarPercentage=percent.genes, hyper_geo_test_bool=TRUE, hyper_geo_reference=hyper.geo.ref, MSIGDB=from.msigdb, GMTURL=gmt.url.present, output_address='./')
 
 
 
