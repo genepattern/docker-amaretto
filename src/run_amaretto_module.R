@@ -9,9 +9,6 @@
 ## whatsoever. Neither the Broad Institute nor MIT can be responsible for its
 ## use, misuse, or functionality.
 
-#source(file.path("/usr/local/bin/amaretto/", "callr.R"))
-
-
 # Load any packages used to in our code to interface with GenePattern.
 # Note the use of suppressMessages and suppressWarnings here.  The package
 # loading process is often noisy on stderr, which will (by default) cause
@@ -38,22 +35,6 @@ sessionInfo()
 #suppressMessages(suppressWarnings(require("wordcloud")))
 #suppressMessages(suppressWarnings(require("RColorBrewer")))
 #suppressMessages(suppressWarnings(require(plyr)))
-
-##################
-#
-# XXX Temp workaround - we need to copy /usr/local/bin/amaretto/hyper_geo_test/all_genes.txt
-# to a hyper_geo_test directory under the $PWD.  Why this is not checked into the AMARETTO
-# github until it is not needed anymore (some day they say) is a mystery to me.
-#
-#################
-#dir.create('./hyper_geo_test')
-#file.copy('/usr/local/bin/amaretto/hyper_geo_test/all_genes.txt', './hyper_geo_test/all_genes.txt')
-#file.copy('/usr/local/bin/amaretto/hyper_geo_test/H.C2CP.genesets.gmt', './hyper_geo_test/H.C2CP.genesets.gmt')
-################
-#
-# XXX end of Temp Workaround 
-#
-###############
 
 # Get the command line arguments.  We'll process these with optparse.
 # https://cran.r-project.org/web/packages/optparse/index.html
@@ -162,41 +143,19 @@ if (!file.exists(opts$methylation.file)){
 }
 gct_meth <- read.gct(opts$methylation.file)
 
-# num.cpu is the full number allocated to the container.  If there are a few, we take one off the top for the OS/Container itself to avoid thrashing
-NrCores = as.integer( 1 * opts$num.cpu)
-
-#
-# Driver list - if provided neglects MET and/or CNV data
-#    Su-In Lee or MSigDB or allow user to provide a file
-# If CNV/MET and a list provided, can use generated, provided, or intersection of both
-#
-print("===== gene list following ==== ")
-print(str(length(geneList)))
-print("===== gene combo method following ==== ")
-print(gene_list_combination_method)
-
 AMARETTOinit = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,VarPercentage = percent.genes, Driver_list = geneList, NrCores = NrCores, method = gene_list_combination_method)
 AMARETTOresults = AMARETTO_Run(AMARETTOinit)
 
-dirName="."
-
 
 # New output file for Community-amaretto follow on module
-print(paste("About to save results ", file.path(getwd(),paste(opts$output.file,".RData",sep = ""))))
-#save(AMARETTOresults, file=file.path(getwd(),paste(opts$output.file,".RData",sep = "")))
 # you can now use this function
-AMARETTO_ExportResults(AMARETTOinit, AMARETTOresults, dirName, Heatmaps = FALSE)
+AMARETTO_ExportResults(AMARETTOinit, AMARETTOresults, ".", Heatmaps = FALSE)
 
 
 gmt_file<-"/source/AMARETTO/inst/templates/H.C2CP.genesets.gmt"
-#system.file("templates/H.C2CP.genesets.gmt", package = "AMARETTO")
-
 
 AMARETTO_HTMLreport(AMARETTOinit,AMARETTOresults,CNV_matrix=gct_cn$data, MET_matrix=gct_meth$data, VarPercentage=percent.genes, hyper_geo_test_bool=TRUE, hyper_geo_reference=gmt_file, MSIGDB=TRUE, GMTURL=FALSE, output_address='./')
 
-
-
-#unlink('hyper_geo_test', recursive = TRUE)
 
 
 
