@@ -4,7 +4,7 @@ FROM r-base:3.5.1
 
 RUN mkdir /build
 
-RUN apt-get update && apt-get upgrade --yes && \
+RUN apt-get update && apt-get upgrade --yes && apt-get autoclean && \
     apt-get install -t unstable libmariadbclient-dev  --yes && \
     apt-get install -t unstable libssl-dev  --yes && \
     apt-get install libxml2-dev --yes && \
@@ -16,7 +16,7 @@ RUN apt-get update && apt-get upgrade --yes && \
     aptitude install libglib2.0-dev -y && \
     apt-get install libcairo2-dev -y && \
     apt-get install  xvfb xauth xfonts-base libxt-dev -y && \
-    apt-get install -y  -t unstable git && \
+    apt-get install pandoc -y  -t unstable git && \
     rm -rf /var/lib/apt/lists/*
 
 
@@ -28,6 +28,9 @@ ENV R_LIBS=/usr/local/lib/R/site-library
 RUN apt-get update && apt-get upgrade -t unstable --yes && \
    apt-get install -t unstable  libv8-3.14-dev --yes 
 
+COPY src/install_stuff.R /usr/local/bin/amaretto/install_stuff.R
+COPY src/callr.R /usr/local/bin/amaretto/callr.R
+
 RUN   mkdir /source1 && \
    mv /source1 /source && \
    cd /source && \
@@ -36,10 +39,18 @@ RUN   mkdir /source1 && \
    mv callr callr.R && \
    git clone https://github.com/gevaertlab/AMARETTO.git && \
    cd AMARETTO && \
-   git checkout develop 
+   git checkout master
+#   git checkout develop 
+
+
+RUN Rscript /usr/local/bin/amaretto/install_stuff.R
+
+# now copy the rest of the files in case of a change
+# and then the second install
 
 COPY src/ /usr/local/bin/amaretto/
-RUN Rscript /usr/local/bin/amaretto/install_stuff.R
+RUN Rscript /usr/local/bin/amaretto/install_amaretto.R
+
 
 CMD ["Rscript", "/usr/local/bin/cogaps/run_gp_tutorial_module.R" ]
 

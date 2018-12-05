@@ -9,7 +9,7 @@
 ## whatsoever. Neither the Broad Institute nor MIT can be responsible for its
 ## use, misuse, or functionality.
 
-source(file.path("/usr/local/bin/amaretto/", "callr.R"))
+#source(file.path("/usr/local/bin/amaretto/", "callr.R"))
 
 
 # Load any packages used to in our code to interface with GenePattern.
@@ -19,25 +19,25 @@ source(file.path("/usr/local/bin/amaretto/", "callr.R"))
 suppressMessages(suppressWarnings(library(getopt)))
 suppressMessages(suppressWarnings(library(optparse)))
 suppressMessages(suppressWarnings(library(AMARETTO)))
-suppressMessages(suppressWarnings(library(tibble)))
-suppressMessages(suppressWarnings(library(plyr)))
+#suppressMessages(suppressWarnings(library(tibble)))
+#suppressMessages(suppressWarnings(library(plyr)))
 
 # Print the sessionInfo so that there is a listing of loaded packages, 
 # the current version of R, and other environmental information in our
 # stdout file.  This can be useful for reproducibility, troubleshooting
 # and comparing between runs.
 sessionInfo()
-suppressMessages(suppressWarnings(library('svglite')))
-suppressMessages(suppressWarnings(library(R2HTML)))
-suppressMessages(suppressWarnings(library("GSEABase")))
-suppressMessages(suppressWarnings(library("rstudioapi")))
-suppressMessages(suppressWarnings(library(foreach)))
-suppressMessages(suppressWarnings(library(doParallel)))
-suppressMessages(suppressWarnings(require("tm")))
-suppressMessages(suppressWarnings(require("SnowballC")))
-suppressMessages(suppressWarnings(require("wordcloud")))
-suppressMessages(suppressWarnings(require("RColorBrewer")))
-suppressMessages(suppressWarnings(require(plyr)))
+#suppressMessages(suppressWarnings(library('svglite')))
+#suppressMessages(suppressWarnings(library(R2HTML)))
+#suppressMessages(suppressWarnings(library("GSEABase")))
+#suppressMessages(suppressWarnings(library("rstudioapi")))
+#suppressMessages(suppressWarnings(library(foreach)))
+#suppressMessages(suppressWarnings(library(doParallel)))
+#suppressMessages(suppressWarnings(require("tm")))
+#suppressMessages(suppressWarnings(require("SnowballC")))
+#suppressMessages(suppressWarnings(require("wordcloud")))
+#suppressMessages(suppressWarnings(require("RColorBrewer")))
+#suppressMessages(suppressWarnings(require(plyr)))
 
 ##################
 #
@@ -46,9 +46,9 @@ suppressMessages(suppressWarnings(require(plyr)))
 # github until it is not needed anymore (some day they say) is a mystery to me.
 #
 #################
-dir.create('./hyper_geo_test')
-file.copy('/usr/local/bin/amaretto/hyper_geo_test/all_genes.txt', './hyper_geo_test/all_genes.txt')
-file.copy('/usr/local/bin/amaretto/hyper_geo_test/H.C2CP.genesets.gmt', './hyper_geo_test/H.C2CP.genesets.gmt')
+#dir.create('./hyper_geo_test')
+#file.copy('/usr/local/bin/amaretto/hyper_geo_test/all_genes.txt', './hyper_geo_test/all_genes.txt')
+#file.copy('/usr/local/bin/amaretto/hyper_geo_test/H.C2CP.genesets.gmt', './hyper_geo_test/H.C2CP.genesets.gmt')
 ################
 #
 # XXX end of Temp Workaround 
@@ -175,52 +175,28 @@ print(str(length(geneList)))
 print("===== gene combo method following ==== ")
 print(gene_list_combination_method)
 
-AMARETTOinit = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,percent.genes, Driver_list = geneList, NrCores = NrCores, method = gene_list_combination_method)
+AMARETTOinit = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,VarPercentage = percent.genes, Driver_list = geneList, NrCores = NrCores, method = gene_list_combination_method)
 AMARETTOresults = AMARETTO_Run(AMARETTOinit)
 
 dirName="."
 
 
-#
-# Below is old code for exporting results.  This now seems to be redundant with the data under the report_html
-#
-
-#for (modNum in patternRange)
-#{
-#	pdf( paste(opts$output.file,"_module_", modNum, ".pdf", sep = " "))
-#	print(AMARETTO_VisualizeModule(AMARETTOinit,AMARETTOresults,gct_cn$data,gct_meth$data,ModuleNr=modNum))
-#	dev.off()
-#}
-#tsvFiles = c("NrModules","AllRegulators","AllGenes")
-#for(res_file in tsvFiles)
-#{
-#  resdata <- AMARETTOresults[[res_file]]
-#  write.table(resdata,file.path(getwd(),paste(res_file,"_amaretto.tsv",sep = "")),row.names=T,sep="\t",quote=F)#,col.names=F
-#}
-#
-#gctFiles = c("ModuleMembership","ModuleData","RegulatoryProgramData","RegulatoryPrograms")
-#for(res_file in gctFiles)
-#{
-#    gct <-list(data=AMARETTOresults[[res_file]])
-#    write.gct(gct, file.path(getwd(),paste(res_file,"_amaretto.gct",sep = "")))
-#}
-
 # New output file for Community-amaretto follow on module
 print(paste("About to save results ", file.path(getwd(),paste(opts$output.file,".RData",sep = ""))))
-save(AMARETTOresults, file=file.path(getwd(),paste(opts$output.file,".RData",sep = "")))
-
-dir.create("hyper_geo_test")
-
-res<-amaretto_html_report(AMARETTOinit,AMARETTOresults,gct_cn$data, gct_meth$data,percent.genes,hyper_geo_test_bool=TRUE,n_cluster=NrCores,wordcloud_bool=FALSE)
+#save(AMARETTOresults, file=file.path(getwd(),paste(opts$output.file,".RData",sep = "")))
+# you can now use this function
+AMARETTO_ExportResults(AMARETTOinit, AMARETTOresults, dirName, Heatmaps = FALSE)
 
 
-# copy the tsv files to the top for easy acccess in the notebook
-# report_html/htmls/tables/module_hyper_geo_test/
-#flist2 <- list.files("report_html/htmls/tables/module_hyper_geo_test/",  full.names = TRUE)
-#file.copy(flist2, ".")
+gmt_file<-"/source/AMARETTO/inst/templates/H.C2CP.genesets.gmt"
+#system.file("templates/H.C2CP.genesets.gmt", package = "AMARETTO")
 
-#unlink("report_html", recursive = TRUE)
-unlink('hyper_geo_test', recursive = TRUE)
+
+AMARETTO_HTMLreport(AMARETTOinit,AMARETTOresults,CNV_matrix=gct_cn$data, MET_matrix=gct_meth$data, VarPercentage=percent.genes, hyper_geo_test_bool=TRUE, hyper_geo_reference=gmt_file, MSIGDB=TRUE, GMTURL=FALSE, output_address='./')
+
+
+
+#unlink('hyper_geo_test', recursive = TRUE)
 
 
 
