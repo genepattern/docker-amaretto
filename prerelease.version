@@ -1,17 +1,1 @@
-#updated after building 0.44
-#Thu, 10 Jan 2019 16:14:43 -0500
-#updated after building 0.43
-#Thu, 10 Jan 2019 16:00:05 -0500
-#updated after building 0.42
-#Fri, 19 Oct 2018 13:27:44 -0400
-#updated after building 0.41
-#Thu, 18 Oct 2018 10:24:49 -0400
-#updated after building 0.4
-#Wed, 17 Oct 2018 12:29:55 -0400
-#updated after building 0.3
-#Wed, 03 Oct 2018 14:55:43 -0400
-#updated after building 0.2
-#Tue, 02 Oct 2018 13:22:26 -0400
-#updated after building 0.1
-#Mon, 16 Jul 2018 16:20:53 -0400
-prerelease.number=45
+prerelease.number=46
