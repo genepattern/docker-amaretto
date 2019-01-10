@@ -16,25 +16,12 @@
 suppressMessages(suppressWarnings(library(getopt)))
 suppressMessages(suppressWarnings(library(optparse)))
 suppressMessages(suppressWarnings(library(AMARETTO)))
-#suppressMessages(suppressWarnings(library(tibble)))
-#suppressMessages(suppressWarnings(library(plyr)))
 
 # Print the sessionInfo so that there is a listing of loaded packages, 
 # the current version of R, and other environmental information in our
 # stdout file.  This can be useful for reproducibility, troubleshooting
 # and comparing between runs.
 sessionInfo()
-#suppressMessages(suppressWarnings(library('svglite')))
-#suppressMessages(suppressWarnings(library(R2HTML)))
-#suppressMessages(suppressWarnings(library("GSEABase")))
-#suppressMessages(suppressWarnings(library("rstudioapi")))
-#suppressMessages(suppressWarnings(library(foreach)))
-#suppressMessages(suppressWarnings(library(doParallel)))
-#suppressMessages(suppressWarnings(require("tm")))
-#suppressMessages(suppressWarnings(require("SnowballC")))
-#suppressMessages(suppressWarnings(require("wordcloud")))
-#suppressMessages(suppressWarnings(require("RColorBrewer")))
-#suppressMessages(suppressWarnings(require(plyr)))
 
 # Get the command line arguments.  We'll process these with optparse.
 # https://cran.r-project.org/web/packages/optparse/index.html
@@ -69,7 +56,6 @@ opts <- opt$options
 # Load some common GP utility code for handling GCT files and so on.  This is included
 # with the module and so it will be found in the same location as this script (libdir).
 source(file.path("/usr/local/bin/amaretto/", "common.R"))
-#source(file.path("/usr/local/bin/amaretto/","AMARETTO_VisualizeModulePatch_0.99.2.R"))
 
 # Optparse will validate increment.value and convert it to a numeric value or give it the
 # default value of 10 if missing.  We must check for NA however (and NULL, to be safe) as
@@ -149,8 +135,6 @@ if ((!is.null(opts$hyper.geo.ref.file))){
         gmt.url.present=FALSE 
 }     
 
-
-
 patternRange <- seq(1,number.of.modules)
 
 
@@ -160,15 +144,38 @@ if (!file.exists(opts$expression.file)){
 }
 gct_exp <- read.gct(opts$expression.file)
 
-if (!file.exists(opts$copy.number.file)){
-     print("Copy number file does not exist")
-}
-gct_cn <- read.gct(opts$copy.number.file)
+# when the selection mode is "predefined list" then the met and CNV files are optional.  For all other modes
+# they are required.  Check now and pop an error if they are needed but not here
+if (opts$driver.gene.list.selection.mode == "predefined"){
+    if (!is.null(opts$copy.number.file)){
+        print("Using predefined gene list but a copy number file was provided.  It will be ignored.")
+    } 
+    if (!is.null(opts$methylation.file)){
+        print("Using predefined gene list but a methylation file was provided.  It will be ignored.")
+    }
 
-if (!file.exists(opts$methylation.file)){
-     print("Methylation file does not exist")
+} else {
+    allFilesPresent = TRUE
+    if (is.null(opts$copy.number.file) || !file.exists(opts$copy.number.file)){
+         print(paste("Required copy number file: '", opts$copy.number.file , "'  does not exist"))
+         allFilesPresent = FALSE
+    }
+
+    if (is.null(opts$methylation.file) || !file.exists(opts$methylation.file)){
+	print(paste("Required methylation file: '", opts$methylation.file , "'  does not exist"))
+        allFilesPresent = FALSE
+    }
+
+    if (!allFilesPresent){
+         # missing files, quit with a non-zero exit code
+         quit(status=999)
+    }
+
+    gct_cn <- read.gct(opts$copy.number.file)
+    gct_meth <- read.gct(opts$methylation.file)
+
 }
-gct_meth <- read.gct(opts$methylation.file)
+
 
 AMARETTOinit = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,VarPercentage = percent.genes, Driver_list = geneList,  method = gene_list_combination_method)
 AMARETTOresults = AMARETTO_Run(AMARETTOinit)
