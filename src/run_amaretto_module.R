@@ -89,11 +89,9 @@ if (opts$driver.gene.list.selection.mode == "computed") {
     
     if ((!is.null(opts$driver.gene.list.file))){
         if (file.exists(opts$driver.gene.list.file)){
- 			geneList = as.character(read.delim(opts$driver.gene.list.file)$V1)
- 		}
-	}	
-		
-    
+ 		geneList = as.character(read.delim(opts$driver.gene.list.file)$V1)
+ 	}
+    }	
     if (is.null(geneList)) {
      
 	# get the preformed gene lists.  They use names that match what is passed in except for "Su-In Lee" which 
@@ -143,6 +141,9 @@ if (!file.exists(opts$expression.file)){
      print("Expression file does not exist")
 }
 gct_exp <- read.gct(opts$expression.file)
+EXP_matrix = gct_exp$data
+MET_matrix = NULL
+CNV_matrix = NULL
 
 # when the selection mode is "predefined list" then the met and CNV files are optional.  For all other modes
 # they are required.  Check now and pop an error if they are needed but not here
@@ -173,11 +174,12 @@ if (opts$driver.gene.list.selection.mode == "predefined"){
 
     gct_cn <- read.gct(opts$copy.number.file)
     gct_meth <- read.gct(opts$methylation.file)
-
+    MET_matrix=gct_meth$data
+    CNV_matrix=gct_cn$data
 }
 
 
-AMARETTOinit = AMARETTO_Initialize(gct_exp$data,gct_cn$data, gct_meth$data,number.of.modules,VarPercentage = percent.genes, Driver_list = geneList,  method = gene_list_combination_method)
+AMARETTOinit = AMARETTO_Initialize(EXP_matrix,  CNV_matrix , MET_matrix,number.of.modules,VarPercentage = percent.genes, Driver_list = geneList,  method = gene_list_combination_method)
 AMARETTOresults = AMARETTO_Run(AMARETTOinit)
 
 
@@ -188,7 +190,7 @@ AMARETTO_ExportResults(AMARETTOinit, AMARETTOresults, ".", Heatmaps = FALSE)
 
 # gmt_file<-"/source/AMARETTO/inst/templates/H.C2CP.genesets.gmt"
 
-AMARETTO_HTMLreport(AMARETTOinit,AMARETTOresults,CNV_matrix=gct_cn$data, MET_matrix=gct_meth$data, VarPercentage=percent.genes, hyper_geo_test_bool=TRUE, hyper_geo_reference=hyper.geo.ref, MSIGDB=from.msigdb, GMTURL=gmt.url.present, output_address='./')
+AMARETTO_HTMLreport(AMARETTOinit,AMARETTOresults,CNV_matrix, MET_matrix, VarPercentage=percent.genes, hyper_geo_test_bool=TRUE, hyper_geo_reference=hyper.geo.ref, MSIGDB=from.msigdb, GMTURL=gmt.url.present, output_address='./')
 
 
 
