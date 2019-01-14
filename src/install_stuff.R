@@ -1,6 +1,6 @@
 ## try http:// if https:// URLs are not supported
 # module specific packages first 
-source("http://bioconductor.org/biocLite.R")
+#source("http://bioconductor.org/biocLite.R")
 install.packages(c("optparse"))
 
 #biocLite("ComplexHeatmap")
@@ -9,7 +9,10 @@ install.packages(c("optparse"))
 
 #install.packages(c(   "GSEABase", "rstudioapi", "R2HTML", "plyr" , "tm", "SnowballC", "wordcloud", "snow", "V8", "randomcoloR", "tidyverse"))
 
-biocLite(c("ComplexHeatmap", "curatedTCGAData", "TCGAutils"))
+#biocLite(c("ComplexHeatmap", "curatedTCGAData", "TCGAutils"))
+
+install.packages("BiocManager")
+BiocManager::install(c("ComplexHeatmap", "curatedTCGAData", "TCGAutils"))
 
 #remove.packages("callr")
 #install.packages("callr")

@@ -122,7 +122,7 @@ if ((!is.null(opts$hyper.geo.ref.file))){
              from.msigdb=opts$from.msigdb
              gmt.url.present=opts$gmt.url.present
         } else {
-             print("Hyper geo ref file does not exist")
+             print("Optional hyper geo ref file was not provided. Using H.C2CP.genesets.gmt")
              hyper.geo.ref="/source/AMARETTO/inst/templates/H.C2CP.genesets.gmt"
              from.msigdb=TRUE
              gmt.url.present=FALSE
@@ -169,6 +169,7 @@ if (opts$driver.gene.list.selection.mode == "predefined"){
 
     if (!allFilesPresent){
          # missing files, quit with a non-zero exit code
+         print("ERROR - cannot proceed, required files being missing or absent")
          quit(status=999)
     }
 
@@ -192,8 +193,10 @@ AMARETTO_ExportResults(AMARETTOinit, AMARETTOresults, ".", Heatmaps = FALSE)
 
 AMARETTO_HTMLreport(AMARETTOinit,AMARETTOresults,CNV_matrix, MET_matrix, VarPercentage=percent.genes, hyper_geo_test_bool=TRUE, hyper_geo_reference=hyper.geo.ref, MSIGDB=from.msigdb, GMTURL=gmt.url.present, output_address='./')
 
-
-
-
+setwd("report_html/htmls")
+zip(paste("../../", opts$output.file,"_report.zip", sep = ""), files="." )
+setwd("../..")
+unlink("Rplots.pdf")
+unlink("Modules_targets_only.gmt")
 
 

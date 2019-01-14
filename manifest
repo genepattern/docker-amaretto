@@ -1,5 +1,5 @@
 JVMLevel=
-LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00378\:0.044
+LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00378\:0.47
 author=Olivier Gevaert, Stanford University, wrapped as a module by Ted Liefeld, UCSD School of Medicine.
 categories=SingleCell
 commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/amaretto/run_amaretto_module.R  --expression.file\=<expression.file> --copy.number.file\=<copy.number.file> --methylation.file\=<methylation.file> --output.file\=<output.file> --percent.genes\=<percent.genes> --number.of.modules\=<number.of.modules> --driver.gene.list\=<driver.gene.list> --driver.gene.list.file\=<driver.gene.list.file> --driver.gene.list.selection.mode=<driver.gene.list.selection.mode> --num.cpu=<job.cpuCount> --hyper.geo.ref.file\=<hyper.geo.ref.file> --from.msigdb\=<from.msigdb> --gmt.url.present\=<gmt.url.present>
@@ -11,7 +11,7 @@ language=any
 minGenePatternVersion=3.9.13
 name=Amaretto
 os=any
-job.docker.image=genepattern/docker-amaretto\:0.43
+job.docker.image=genepattern/docker-amaretto\:0.47
 #job.docker.image=genepattern/docker-amaretto:develop
 
 job.cpuCount=4
@@ -107,7 +107,7 @@ p6_value=
 p7_MODE=IN
 p7_TYPE=FILE
 p7_default_value=
-p7_description=A text file containing a list of driver genes to use instead of the predefined lists, one gene per line separated by a newline symbol (\\n).
+p7_description=A text file containing a list of driver genes to use instead of the predefined lists, one gene per line separated by a newline symbol (/n).
 p7_fileFormat=gct
 p7_flag=
 p7_name=driver.gene.list.file
