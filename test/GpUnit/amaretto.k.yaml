@@ -1,12 +1,15 @@
 #
-# ant -f ${GPUNIT_HOME}/build.xml -Dgpunit.diffStripTrailingCR="--strip-trailing-cr" -Dgp.host="beta.genepattern.org" -Dgp.url="https://cloud.genepattern.org" -Dgp.user="ted-dev" -Dgp.password="" -Dgpunit.testfolder=`pwd` gpunit
+# ant -f ${GPUNIT_HOME}/build.xml -Dgpunit.diffStripTrailingCR="--strip-trailing-cr" -Dgp.host="gp-beta-ami.genepattern.org" -Dgp.url="https://cloud.genepattern.org" -Dgp.user="ted-dev" -Dgp.password="" -Dgpunit.testfolder=`pwd` gpunit
+# It took about 2 hrs 10 min to run.
 #
-name: amaretto.a
+name: amaretto.g
 module: Amaretto
 params: 
     "expression.file":  https://datasets.genepattern.org/data/module_support_files/Amaretto/TCGA_OV_Expression.gct
     "copy.number.file": https://datasets.genepattern.org/data/module_support_files/Amaretto/TCGA_OV_CNV.gct
     "methylation.file": https://datasets.genepattern.org/data/module_support_files/Amaretto/TCGA_OV_Methylation.gct 
+    "driver.gene.list" : "TFs_CISBP"
+    "driver.gene.list.selection.mode": "intersect"
     "number.of.modules":  5
     "percent.genes":  10
 assertions:

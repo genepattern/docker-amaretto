@@ -1,0 +1,16 @@
+#
+# ant -f ${GPUNIT_HOME}/build.xml -Dgpunit.diffStripTrailingCR="--strip-trailing-cr" -Dgp.host="gp-beta-ami.genepattern.org" -Dgp.url="https://cloud.genepattern.org" -Dgp.user="ted-dev" -Dgp.password="" -Dgpunit.testfolder=`pwd` gpunit
+# It took about 2 hrs 10 min to run.
+#
+# only expression plus a gene set file passed, predefined (meth and CN ignored)
+name: amaretto.e
+module: Amaretto
+params: 
+    "expression.file":  https://datasets.genepattern.org/data/module_support_files/Amaretto/TCGA_OV_Expression.gct
+    "driver.gene.list.file": https://datasets.genepattern.org/data/module_support_files/Amaretto/gene_sets.gmt
+    "driver.gene.list.selection.mode": "predefined"
+    "number.of.modules":  5
+    "percent.genes":  10
+assertions:
+    jobStatus: success
+
