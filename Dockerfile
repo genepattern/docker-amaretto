@@ -1,13 +1,11 @@
 # copyright 2017-2018 Regents of the University of California and the Broad Institute. All rights reserved.
 
-FROM r-base:3.5.2
+FROM r-base:3.5.0
 
 RUN mkdir /build
 
-RUN apt-mark hold r-base
-
-RUN apt-mark hold r-base && \
-    apt-get update && apt-get autoclean && \
+RUN apt-get update && apt-get upgrade --yes && \
+    apt-get install -t unstable libmariadbclient-dev  --yes && \
     apt-get install -t unstable libssl-dev  --yes && \
     apt-get install libxml2-dev --yes && \
     apt-get install libcurl4-gnutls-dev --yes && \
@@ -18,44 +16,36 @@ RUN apt-mark hold r-base && \
     aptitude install libglib2.0-dev -y && \
     apt-get install libcairo2-dev -y && \
     apt-get install  xvfb xauth xfonts-base libxt-dev -y && \
-    apt-get install pandoc -y  -t unstable git && \
+    apt-get install -y  -t unstable git && \
     rm -rf /var/lib/apt/lists/*
 
 
 COPY sources.list /etc/apt/sources.list
 COPY Rprofile.gp.site ~/.Rprofile
 COPY Rprofile.gp.site /usr/lib/R/etc/Rprofile.site
+ENV R_LIBS_S3=/genepattern-server/Rlibraries/R344/rlibs
 ENV R_LIBS=/usr/local/lib/R/site-library
+ENV R_HOME=/usr/local/lib64/R
+COPY install_stuff.R /build/source/install_stuff.R
 
-RUN apt-mark hold r-base && \
-   apt-get update  && \
-   apt-get install -t unstable  libv8-3.14-dev --yes 
-
-COPY src/install_stuff.R /usr/local/bin/amaretto/install_stuff.R
-COPY src/callr.R /usr/local/bin/amaretto/callr.R
-
-RUN   mkdir /source1 && \
-   mv /source1 /source && \
+RUN mkdir /source && \
    cd /source && \
-   echo "i" && \
-   wget https://install-github.me/r-lib/callr && \
-   mv callr callr.R && \
-   git clone https://github.com/gevaertlab/AMARETTO.git && \
+   git clone https://github.com/liefeld/AMARETTO.git && \
    cd AMARETTO && \
-   git checkout master
-#   git checkout develop 
+   git checkout develop
 
+RUN apt-get update && apt-get  install -t unstable -y libv8-dev
 
-RUN Rscript /usr/local/bin/amaretto/install_stuff.R
+# install_stuff.R builds and installs AMARETTO from source along with its dependencies   
+RUN Rscript /build/source/install_stuff.R 
 
-# now copy the rest of the files in case of a change
-# and then the second install
+RUN apt-get update && apt-get install -t unstable pandoc --yes
 
-COPY src/ /usr/local/bin/amaretto/
-COPY R_environ ~/.Renviron
-
-# this is where amaretto is actually installed.
-RUN Rscript /usr/local/bin/amaretto/install_amaretto.R
-
-CMD ["Rscript", "/usr/local/bin/cogaps/run_amaretto_module.R" ]
+# the module files are set into /usr/local/bin/amaretto
+COPY src/* /usr/local/bin/amaretto/ 
+COPY src/hyper_geo_test/* /usr/local/bin/amaretto/hyper_geo_test/
+COPY src/mohsen_report_function.R /usr/local/bin/amaretto/mohsen_report_function.R
+#COPY src/hyper_geo_test/HyperGTestGeneEnrichment.R /usr/local/bin/amaretto/hyper_geo_test/HyperGTestGeneEnrichment.R
+#COPY src/hyper_geo_test/ProcessTCGA_modules.R  /usr/local/bin/amaretto/hyper_geo_test/ProcessTCGA_modules.R
+CMD ["Rscript", "/usr/local/bin/cogaps/run_gp_tutorial_module.R" ]
 

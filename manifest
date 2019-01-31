@@ -1,18 +1,22 @@
+#Mon, 27 Aug 2018 11:23:51 -0700
+#Mon Jun 18 21:02:09 UTC 2018
 JVMLevel=
-LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00378\:0.47
+#LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00378\:999999999
+LSID=urn\:lsid\:broad.mit.edu\:liefeld\:00378\:999999999
 author=Olivier Gevaert, Stanford University, wrapped as a module by Ted Liefeld, UCSD School of Medicine.
 categories=SingleCell
-commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/amaretto/run_amaretto_module.R  --expression.file\=<expression.file> --copy.number.file\=<copy.number.file> --methylation.file\=<methylation.file> --output.file\=<output.file> --percent.genes\=<percent.genes> --number.of.modules\=<number.of.modules> --driver.gene.list\=<driver.gene.list> --driver.gene.list.file\=<driver.gene.list.file> --driver.gene.list.selection.mode=<driver.gene.list.selection.mode> --num.cpu=<job.cpuCount> --hyper.geo.ref.file\=<hyper.geo.ref.file> --from.msigdb\=<from.msigdb> --gmt.url.present\=<gmt.url.present>
+commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/amaretto/run_amaretto_module.R  --expression.file\=<expression.file> --copy.number.file\=<copy.number.file> --methylation.file\=<methylation.file> --output.file\=<output.file> --percent.genes\=<percent.genes> --number.of.modules\=<number.of.modules> --driver.gene.list\=<driver.gene.list> --driver.gene.list.file\=<driver.gene.list.file> --driver.gene.list.selection.mode=<driver.gene.list.selection.mode> --num.cpu=<job.cpuCount>
 
 cpuType=any
 description=Discovery of driver genes using epigenomic, genomic and transcriptomic data using module networks with penalized regression. 
 fileFormat=gct
 language=any
 minGenePatternVersion=3.9.13
-name=Amaretto
+#name=Amaretto
+name=Amaretto_Ted
 os=any
-job.docker.image=genepattern/docker-amaretto\:0.47
-#job.docker.image=genepattern/docker-amaretto:develop
+#job.docker.image=genepattern/docker-amaretto\:0.3
+job.docker.image=genepattern/docker-amaretto:develop
 
 job.cpuCount=4
 
@@ -37,7 +41,7 @@ p2_description=A gct file containing the copy number profiles
 p2_fileFormat=gct
 p2_flag=
 p2_name=copy.number.file
-p2_numValues=0..1
+p2_numValues=1..1
 p2_optional=on
 p2_prefix=
 p2_prefix_when_specified=
@@ -52,7 +56,7 @@ p3_description=A gct file containing the methylation profiles
 p3_fileFormat=gct
 p3_flag=
 p3_name=methylation.file
-p3_numValues=0..1
+p3_numValues=1..1
 p3_optional=on
 p3_prefix=
 p3_prefix_when_specified=
@@ -107,7 +111,7 @@ p6_value=
 p7_MODE=IN
 p7_TYPE=FILE
 p7_default_value=
-p7_description=A text file containing a list of driver genes to use instead of the predefined lists, one gene per line separated by a newline symbol (/n).
+p7_description=A text file containing a list of driver genes to use instead of the predefined lists
 p7_fileFormat=gct
 p7_flag=
 p7_name=driver.gene.list.file
@@ -120,19 +124,19 @@ p7_value=
 
 p8_flag=
 p8_name=driver.gene.list
-p8_description=Select a predefined gene list when needed or upload one below.
-p8_numValues=0..1
-p8_optional=on
+p8_description=Predefined list of driver genes to use instead of or in addition to the list computed from CNV and/or Methylation data in a text file, one gene per line.
+p8_numValues=1..1
+p8_optional=
 p8_prefix=
 p8_prefix_when_specified=
 p8_type=java.lang.String
-p8_value=MSigDB\=MSigDB driver genes;su-in-lee\=Su-in Lee list of driver genes;Cancer_Gene_Census\=Cancer_Gene_Census;Cancer_Gene_Census_Tier1\=Cancer_Gene_Census_Tier1;Cancer_Gene_Census_Tier2\=Cancer_Gene_Census_Tier2;TFs_CISBP\=TFs_CISBP;TFs_GO\=TFs_GO;TFs_HOCO\=TFs_HOCO;TFs_MSIG\=TFs_MSIG;TFs_TFutils_union\=TFs_TFutils_union 
+p8_value=MSigDB\=MSigDB driver genes;su-in-lee\=Su-in Lee list of driver genes 
 p8_default_value=MSigDB
 
 
 p9_flag=
 p9_name=driver.gene.list.selection.mode
-p9_description=Compute a list from the CNV and MET data, use the driver gene list file (if provided), or compute an intersect or union of CNV and MET derived drivers with a provided gene list.
+p9_description=Use the driver gene list file (if provided), compute a list from the CNV and MET data, or compute and intersect with a provided driver gene list
 p9_numValues=1..1
 p9_optional=
 p9_prefix=
@@ -140,42 +144,6 @@ p9_prefix_when_specified=
 p9_type=java.lang.String
 p9_value=computed\=Use list computed from CNV/MET data;predefined\=Use predefined list;intersect\=Compute and intersect with predefined list;union\=Compute and union with predefined list
 p9_default_value= 
-
-p10_MODE=IN
-p10_TYPE=FILE
-p10_default_value=
-p10_description=A gmt-format file containing gene lists to use for the hyper geometric test comparison.  In none is provided a default will be used. If a file is provided, use the "from msigdb" and "gmt url present" parameters to indicate if the genesets are from msigdb and if a url is present in the second column of the gmt file.
-p10_fileFormat=gmt
-p10_flag=
-p10_name=hyper.geo.ref.file
-p10_numValues=0..1
-p10_optional=on
-p10_prefix=
-p10_prefix_when_specified=--hyper.geo.ref.file
-p10_type=java.io.File
-p10_value=
-
-p11_flag=
-p11_name=from.msigdb
-p11_description=TRUE if gene sets were retrieved from MSIGDB. Links will be created in the report.
-p11_numValues=1..1
-p11_optional=
-p11_prefix=
-p11_prefix_when_specified=
-p11_type=java.lang.String
-p11_value=TRUE\=Gene Sets are from MSigDB;FALSE\=Gene Sets are not from MSigDB;
-p11_default_value=TRUE
-
-p12_flag=
-p12_name=gmt.url.present
-p12_description=TRUE if the second column of the gmt contains URLs to gene set, FALSE if it contains a description
-p12_numValues=1..1
-p12_optional=
-p12_prefix=
-p12_prefix_when_specified=
-p12_type=java.lang.String
-p12_value=TRUE\=Second column contains URL;FALSE\=Second column is not a URL
-p12_default_value=FALSE
 
 
 privacy=public
@@ -186,4 +154,4 @@ requiredPatchURLs=
 taskDoc=doc.html
 taskType=SingleCell
 userid=ted-dev
-version=Working revision from Gevaert lab git repo on 10/16/18 
+version=Initial Revision

@@ -186,16 +186,24 @@ AMARETTOresults = AMARETTO_Run(AMARETTOinit)
 
 # New output file for Community-amaretto follow on module
 # you can now use this function
-AMARETTO_ExportResults(AMARETTOinit, AMARETTOresults, ".", Heatmaps = FALSE)
+
+print(paste("Saving results with prefix " , OutputFilenamePrefix=opts$output.file))
+AMARETTO_ExportResults(AMARETTOinit, AMARETTOresults, ".", Heatmaps = FALSE, OutputFilenamePrefix=opts$output.file)
 
 
 # gmt_file<-"/source/AMARETTO/inst/templates/H.C2CP.genesets.gmt"
+x <- getwd()
 
-AMARETTO_HTMLreport(AMARETTOinit,AMARETTOresults,CNV_matrix, MET_matrix, VarPercentage=percent.genes, hyper_geo_test_bool=TRUE, hyper_geo_reference=hyper.geo.ref, MSIGDB=from.msigdb, GMTURL=gmt.url.present, output_address='./')
+report_address = paste0(x, opts$output.file,"_report/")
+dir.create(file.path(report_address), showWarnings = FALSE)
 
-setwd("report_html/htmls")
-zip(paste("../../", opts$output.file,"_report.zip", sep = ""), files="." )
-setwd("../..")
+print(paste("created dir: ", report_address, "  ", dir.exists(report_address)))
+
+AMARETTO_HTMLreport(AMARETTOinit,AMARETTOresults,CNV_matrix, MET_matrix, VarPercentage=percent.genes, hyper_geo_test_bool=TRUE, hyper_geo_reference=hyper.geo.ref, MSIGDB=from.msigdb, GMTURL=gmt.url.present, output_address=report_address)
+
+x <- getwd()
+zip(paste(x,"/", opts$output.file,"_report.zip", sep = ""), files=report_address )
+
 unlink("Rplots.pdf")
 unlink("Modules_targets_only.gmt")
 
