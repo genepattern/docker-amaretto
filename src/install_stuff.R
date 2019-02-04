@@ -4,8 +4,8 @@
 install.packages(c("optparse"))
 
 #biocLite("ComplexHeatmap")
-#install.packages(c("RCurl", "limma", "foreach", "parallel", "doParallel", "glmnet", "matrixStats", "RColorBrewer", "impute", "Matrix", "BiocStyle", "stringr", "circlize", "R.utils" , "svglite", "callr", "Rcpp", "DT", "htmltools", "reshape2"))
-#install.packages(c(   "GSEABase", "rstudioapi", "R2HTML", "plyr" , "tm", "SnowballC", "wordcloud", "snow", "V8", "randomcoloR", "tidyverse"))
+install.packages(c("RCurl", "limma", "foreach", "parallel", "doParallel", "glmnet", "matrixStats", "RColorBrewer", "impute", "Matrix", "BiocStyle", "stringr", "circlize", "R.utils" , "svglite", "callr", "Rcpp", "DT", "htmltools", "reshape2"))
+install.packages(c(   "GSEABase", "rstudioapi", "R2HTML", "plyr" , "tm", "SnowballC", "wordcloud", "snow", "V8", "randomcoloR", "tidyverse"))
 #biocLite(c("ComplexHeatmap", "curatedTCGAData", "TCGAutils"))
 
 install.packages("BiocManager")
