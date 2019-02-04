@@ -17,8 +17,8 @@ LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:0037
 name=Amaretto
 #name=Amaretto_Ted
 
-#job.docker.image=genepattern/docker-amaretto\:ted_0.49
-job.docker.image=genepattern/docker-amaretto:develop
+job.docker.image=genepattern/docker-amaretto\:0.49
+#job.docker.image=genepattern/docker-amaretto:develop
 
 job.cpuCount=4
 
