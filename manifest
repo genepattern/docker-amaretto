@@ -130,7 +130,7 @@ p8_optional=
 p8_prefix=
 p8_prefix_when_specified=
 p8_type=java.lang.String
-p8_value=MSigDB\=MSigDB driver genes;su-in-lee\=Su-in Lee list of driver genes 
+p8_value=MSigDB\=MSigDB driver genes;su-in-lee\=Su-in Lee list of driver genes;TFs_CISBP\=Transcription Factors - Gene Ontology;TFs_GO\=Transcription Factors - Gene Ontology;TFs_HOCO\=Transcription Factors - HOCO;TFs_MSIG\=Transcription Factors - MSig;TFs_TFutils_union\=Transcription Factors - TFUtils union;Cancer_Gene_Census\=Cancer Gene Census;Cancer_Gene_Census_Tier1\=Cancer Gene Census - Tier 1;Cancer_Gene_Census_Tier2\=Cancer Gene Census - Tier 2 
 p8_default_value=MSigDB
 
 
