@@ -28,9 +28,8 @@ ENV R_LIBS=/usr/local/lib/R/site-library
 ENV R_HOME=/usr/local/lib64/R
 COPY src/install_stuff.R /build/source/install_stuff.R
 
-#  https://github.com/gevaertlab/AMARETTO
-#  https://github.com/liefeld/AMARETTO.git
 RUN mkdir /source && \
+   echo BUILDING && \
    cd /source && \
    git clone https://github.com/gevaertlab/AMARETTO.git && \
    cd AMARETTO && \

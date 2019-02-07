@@ -1,9 +1,9 @@
-#Mon, 27 Aug 2018 11:23:51 -0700
+#Thu, 07 Feb 2019 07:28:27 -0800
 #Mon Jun 18 21:02:09 UTC 2018
 JVMLevel=
 author=Olivier Gevaert, Stanford University, wrapped as a module by Ted Liefeld, UCSD School of Medicine.
 categories=SingleCell
-commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/amaretto/run_amaretto_module.R  --expression.file\=<expression.file> --copy.number.file\=<copy.number.file> --methylation.file\=<methylation.file> --output.file\=<output.file> --percent.genes\=<percent.genes> --number.of.modules\=<number.of.modules> --driver.gene.list\=<driver.gene.list> --driver.gene.list.file\=<driver.gene.list.file> --driver.gene.list.selection.mode=<driver.gene.list.selection.mode> --num.cpu=<job.cpuCount>  --gene.sets.database=<gene.sets.database> --from.msigdb=<from.msigdb> --gmt.url.present=<gmt.url.present>
+commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/amaretto/run_amaretto_module.R  --expression.file\=<expression.file> --copy.number.file\=<copy.number.file> --methylation.file\=<methylation.file> --output.file\=<output.file> --percent.genes\=<percent.genes> --number.of.modules\=<number.of.modules> --driver.gene.list\=<driver.gene.list> --driver.gene.list.file\=<driver.gene.list.file> --driver.gene.list.selection.mode\=<driver.gene.list.selection.mode> --num.cpu\=<job.cpuCount>  --gene.sets.database\=<gene.sets.database>  
 cpuType=any
 description=Discovery of driver genes using epigenomic, genomic and transcriptomic data using module networks with penalized regression. 
 fileFormat=gct
@@ -12,13 +12,13 @@ minGenePatternVersion=3.9.13
 os=any
 
 LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00378\:999999999
-#LSID=urn\:lsid\:broad.mit.edu\:liefeld\:00378\:999999999
+#LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00378\:999999999
 
 name=Amaretto
 #name=Amaretto_Ted
 
-job.docker.image=genepattern/docker-amaretto\:0.51
-#job.docker.image=genepattern/docker-amaretto:develop
+job.docker.image=genepattern/docker-amaretto\:0.53
+#job.docker.image=genepattern/docker-amaretto\:develop
 
 job.cpuCount=4
 
@@ -130,7 +130,7 @@ p8_optional=
 p8_prefix=
 p8_prefix_when_specified=
 p8_type=java.lang.String
-p8_value=MSigDB\=MSigDB driver genes;su-in-lee\=Su-in Lee list of driver genes;TFs_CISBP\=Transcription Factors - Gene Ontology;TFs_GO\=Transcription Factors - Gene Ontology;TFs_HOCO\=Transcription Factors - HOCO;TFs_MSIG\=Transcription Factors - MSig;TFs_TFutils_union\=Transcription Factors - TFUtils union;Cancer_Gene_Census\=Cancer Gene Census;Cancer_Gene_Census_Tier1\=Cancer Gene Census - Tier 1;Cancer_Gene_Census_Tier2\=Cancer Gene Census - Tier 2 
+p8_value=MSigDB\=MSigDB driver genes;su-in-lee\=Su-in Lee list of driver genes;TFs_CISBP\=Transcription Factors - CISBP;TFs_GO\=Transcription Factors - Gene Ontology;TFs_HOCO\=Transcription Factors - HOCO;TFs_MSIG\=Transcription Factors - MSig;TFs_TFutils_union\=Transcription Factors - TFUtils union;Cancer_Gene_Census\=Cancer Gene Census;Cancer_Gene_Census_Tier1\=Cancer Gene Census - Tier 1;Cancer_Gene_Census_Tier2\=Cancer Gene Census - Tier 2 
 p8_default_value=MSigDB
 
 
@@ -143,12 +143,11 @@ p9_prefix=
 p9_prefix_when_specified=
 p9_type=java.lang.String
 p9_value=computed\=Use list computed from CNV/MET data;predefined\=Use predefined list;intersect\=Compute and intersect with predefined list;union\=Compute and union with predefined list
-p9_default_value= 
+p9_default_value=
 
-#  <gene.sets.database> <link.to.msigdb> <url.in.description>
 p10_MODE=IN
 p10_TYPE=FILE
-p10_default_value=ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c2.all.v6.2.symbols.gmt
+p10_default_value=ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c2.cp.v6.2.symbols.gmt
 p10_description=Gene sets database from GSEA website. Upload a gene set if your gene set is not listed as a choice from MSigDB.
 p10_fileFormat=gmt;gmx;grp
 p10_numValues=1+
@@ -160,41 +159,8 @@ p10_prefix_when_specified=
 p10_type=java.io.File
 p10_value=ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c1.all.v6.2.symbols.gmt\=c1.all.v6.2.symbols.gmt [Positional];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c2.all.v6.2.symbols.gmt\=c2.all.v6.2.symbols.gmt [Curated];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c2.cgp.v6.2.symbols.gmt\=c2.cgp.v6.2.symbols.gmt [Curated];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c2.cp.v6.2.symbols.gmt\=c2.cp.v6.2.symbols.gmt [Curated];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c2.cp.biocarta.v6.2.symbols.gmt\=c2.cp.biocarta.v6.2.symbols.gmt [Curated];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c2.cp.kegg.v6.2.symbols.gmt\=c2.cp.kegg.v6.2.symbols.gmt [Curated];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c2.cp.reactome.v6.2.symbols.gmt\=c2.cp.reactome.v6.2.symbols.gmt [Curated];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c3.all.v6.2.symbols.gmt\=c3.all.v6.2.symbols.gmt [Motif];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c3.mir.v6.2.symbols.gmt\=c3.mir.v6.2.symbols.gmt [Motif];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c3.tft.v6.2.symbols.gmt\=c3.tft.v6.2.symbols.gmt [Motif];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c4.all.v6.2.symbols.gmt\=c4.all.v6.2.symbols.gmt [Computational];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c4.cgn.v6.2.symbols.gmt\=c4.cgn.v6.2.symbols.gmt [Computational];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c4.cm.v6.2.symbols.gmt\=c4.cm.v6.2.symbols.gmt [Computational];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c5.all.v6.2.symbols.gmt\=c5.all.v6.2.symbols.gmt [Gene Ontology];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c5.bp.v6.2.symbols.gmt\=c5.bp.v6.2.symbols.gmt [Gene Ontology];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c5.cc.v6.2.symbols.gmt\=c5.cc.v6.2.symbols.gmt [Gene Ontology];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c5.mf.v6.2.symbols.gmt\=c5.mf.v6.2.symbols.gmt [Gene Ontology];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c6.all.v6.2.symbols.gmt\=c6.all.v6.2.symbols.gmt [Oncogenic Signatures];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/c7.all.v6.2.symbols.gmt\=c7.all.v6.2.symbols.gmt [Immunologic signatures];ftp\://gpftp.broadinstitute.org/module_support_files/msigdb/gmt/h.all.v6.2.symbols.gmt\=h.all.v6.2.symbols.gmt [Hallmarks]
 
-# "from.msigdb","gmt.url.present"
-
-p11_MODE=
-p11_TYPE=TEXT
-p11_default_value=TRUE
-p11_description=For an uploaded geneset, are they MSigDB gene sets that should be linked to the MSigDB web site
-p11_fileFormat=
-p11_flag=
-p11_name=from.msigdb
-p11_numValues=1..1
-p11_optional=
-p11_prefix=
-p11_prefix_when_specified=
-p11_type=java.lang.String
-p11_value=FALSE\=no;TRUE\=yes
-
-p12_MODE=
-p12_TYPE=TEXT
-p12_default_value=TRUE
-p12_description=For an uploaded geneset, is there a link in the description (second) column to use in the report
-p12_fileFormat=
-p12_flag=
-p12_name=gmt.url.present
-p12_numValues=1..1
-p12_optional=
-p12_prefix=
-p12_prefix_when_specified=
-p12_type=java.lang.String
-p12_value=FALSE\=no;TRUE\=yes
-
-
-
-
 privacy=public
-publicationDate=08/27/2018 11\:23 
+publicationDate=02/07/2019 07\:28 
 quality=${quality.level}
 requiredPatchLSIDs=
 requiredPatchURLs=

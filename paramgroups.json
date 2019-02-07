@@ -3,6 +3,6 @@
 {name: "Basic parameters", hidden: false, 
   parameters: ["number.of.modules", "percent.genes", "output.file"]},
 {name: 'Hyper geometric test', hidden: false,
-  parameters: ["gene.sets.database", "from.msigdb","gmt.url.present"]}
+  parameters: ["gene.sets.database" ]}
 ]
 

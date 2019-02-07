@@ -45,9 +45,7 @@ option_list <- list(
   make_option("--driver.gene.list.file", dest="driver.gene.list.file"),
   make_option("--driver.gene.list.selection.mode", dest="driver.gene.list.selection.mode"),
   make_option("--num.cpu", type="integer", dest="num.cpu"),
-  make_option("--gene.sets.database", dest="gene.sets.database"),
-  make_option("--from.msigdb", type="logical", dest="from.msigdb"),
-  make_option("--gmt.url.present", type="logical", dest="gmt.url.present")
+  make_option("--gene.sets.database", dest="gene.sets.database")
 )
 
 
@@ -118,51 +116,36 @@ if (opts$driver.gene.list.selection.mode == "computed") {
 print(paste0("GeneList:  using ", gene_list_combination_method, "  ", opts$driver.gene.list.selection.mode ))
 
 hyper.geo.ref = NULL
-from.msigdb = TRUE
-gmt.url.present = FALSE
 catGmtFilename = "./amCombinedGmt.gmt"
 if ((!is.null(opts$gene.sets.database))){
         if (file.exists(opts$gene.sets.database)){
-              print("LOADING GENES FROM GENE SET DATABASE")	      
-              # XXX TODO - need to combine all the file contents, right now its last one wins
-             
               # its potentially a list of gmt files.  Read the file names then load them all in
               catExec = "cat "
 	      geneSetFileList = readLines(opts$gene.sets.database)
               for (fileRaw in geneSetFileList){
                     file = trimws(fileRaw)
-                    print(paste("   ---   loading from ", file))
+                    print(paste("   ---   loading gene sets from ", file))
                     if (!is.emptyString(file) && file.exists(file)){
                            # hyper.geo.ref = as.character(read.delim(file)$V1)
 			catExec = paste(catExec, file)
-                        print(paste("Building catexec: ", catExec))
                     } else {
 			print(paste("GMT issue ", file))
                     }
              }
              hyper.geo.ref = catGmtFilename
 	     catExec <- paste(catExec, " > ", hyper.geo.ref )
-	     print(paste("running: ", catExec))
  	     system(catExec)
              #  hyper.geo.ref = as.character(read.delim(opts$hyper.geo.ref.file)$V1)
-             from.msigdb=opts$from.msigdb
-             gmt.url.present=opts$gmt.url.present
         } else {
              print("Optional hyper geo ref file was not provided. Using H.C2CP.genesets.gmt")
              hyper.geo.ref="/source/AMARETTO/inst/templates/H.C2CP.genesets.gmt"
-             from.msigdb=TRUE
-             gmt.url.present=FALSE
         }
 } else {
 	hyper.geo.ref="/source/AMARETTO/inst/templates/H.C2CP.genesets.gmt"
-    from.msigdb=TRUE
-    gmt.url.present=FALSE 
 
     print("USING DEFAULT GMT")
 }     
 
-print(paste("From MS: ",from.msigdb))
-print(paste("GMT URL: ",gmt.url.present))
 
 patternRange <- seq(1,number.of.modules)
 
@@ -232,7 +215,7 @@ dir.create(file.path(report_address), showWarnings = FALSE)
 print(paste("created dir: ", report_address, "  ", dir.exists(report_address)))
           
 
-AMARETTO_HTMLreport(AMARETTOinit,AMARETTOresults,CNV_matrix, MET_matrix, VarPercentage=percent.genes, hyper_geo_test_bool=TRUE, hyper_geo_reference=hyper.geo.ref, MSIGDB=from.msigdb, GMTURL=gmt.url.present, output_address=report_address)
+AMARETTO_HTMLreport(AMARETTOinit,AMARETTOresults,CNV_matrix, MET_matrix, VarPercentage=percent.genes, hyper_geo_test_bool=TRUE, hyper_geo_reference=hyper.geo.ref, MSIGDB=TRUE, output_address=report_address)
 
 x <- getwd()
 zip(zipfile = file.path(paste(x,"/", opts$output.file,"_report.zip", sep = "")), files=file.path(report_address) )
