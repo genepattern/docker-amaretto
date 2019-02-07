@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!-- saved from url=(0078)http://software.broadinstitute.org/cancer/software/genepattern/module_docs/223 -->
+<html class="">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>AMARETTO in GenePattern</title>
+  <link href="./assets/docstyle.css" media="all" rel="stylesheet">
+  <style type="text/css"></style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta content="authenticity_token" name="csrf-param">
+</head>
+<body >
+
+<script>
+</script>
+	
+	<div class="gp-content-header fluid">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<h1><big>AMARETTO</big></h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				
+
+<dl class="dl-horizontal">
+	<dt>LSID</dt>
+	<dd>urn:lsid:broad.mit.edu:cancer.software.genepattern.module.analysis:00378</dd>
+	<dt>Author(s)</dt>
+	<dd>Gevaert Lab, Stanford and the Pochet Lab, Broad Institute.</dd>
+	<dt>Contact(s)</dt>
+	<dd><p>Amaretto algorithm and data preprocessing:&nbsp;Jayendra Ravindra Shinde &lt;jayendra@stanford.edu&gt;,&nbsp; Celine Everaert &lt;ceveraer@broadinstitute.org&gt;</p>
+
+<p>Module wrapping issues:&nbsp; Ted Liefeld &lt;liefeld@cloud.ucsd.edu&gt;</p>
+</dd>
+</dl>
+
+
+<hr>
+
+<h2>Introduction</h2>
+
+<p>This repository contains the code accompanying the manuscript "Module analysis captures pancancer genetically and epigenetically deregulated cancer driver genes for smoking and antiviral response".<br>
+We have developed an algorithm called AMARETTO to identify pancancer driver genes. AMARETTO integrates pancancer DNA copy number, DNA methylation and gene expression data into modules to identify pancancer driver genes.&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h2>Algorithm</h2>
+
+<div>The algorithm:&nbsp;</div>
+
+<div><span style="white-space:pre"> </span>Step 1 identifies candidate cancer driver genes with tumor-specific DNA copy number or DNA methylation alterations compared to normal tissue. We used GISTIC to identify significantly and recurrently deleted or amplified regions in the genome. Similarly, we used MethylMix to identify recurrently hyper-or hypomethylated genes.&nbsp;</div>
+
+<div><span style="white-space:pre"> </span>Step 2 identifies cancer driver genes by modeling the relationship between (epi)genomic and transcriptomic data on an individual gene basis.</div>
+
+<div><span style="white-space:pre"> </span>Step 3 uses the cancer driver genes identified from step 2 and now takes a global approach by dissecting global gene expression data into modules of co-expressed genes. Each module also has an associated regulatory program that connects the cancer driver genes from step 1 with their downstream targets. This regulatory program is modeled using linear regression with elastic net regularization.</div>
+
+<div>&nbsp;</div>
+
+<div>AMARETTO supports downloading and processing TCGA data from Firehose (see https://gdac.broadinstitute.org/).</div>
+
+<h2>References</h2>
+
+<p>"Module Analysis Captures Pancancer Genetically and Epigenetically Deregulated Cancer Driver Genes for Smoking and Antiviral Response"<br>
+MagaliChampiona, KevinBrennana, TomCroonenborghs, Andrew J.Gentles, NathaliePochet, OlivierGevaert.&nbsp;&nbsp;<a aria-label="Persistent link using digital object identifier" class="doi" href="https://doi.org/10.1016/j.ebiom.2017.11.028" style="margin: 0px; padding: 0px; color: rgb(0, 115, 152); word-break: break-word; font-family: Arial, Helvetica, &quot;Lucida Sans Unicode&quot;, &quot;Microsoft Sans Serif&quot;, &quot;Segoe UI Symbol&quot;, STIXGeneral, &quot;Cambria Math&quot;, &quot;Arial Unicode MS&quot;, sans-serif; font-size: 13px;" target="_blank" title="Persistent link using digital object identifier">https://doi.org/10.1016/j.ebiom.2017.11.028</a></p>
+
+<p>https://bitbucket.org/gevaertlab/pancanceramaretto/overview</p>
+
+
+<h2>Input Files</h2>
+
+<ol>
+	<li>Expresion File<br>
+	Gene expression data in gct file format.</li>
+	<li>Copy number File<br>
+	Gene copy number data in gct file format.</li>
+	<li>Methylation File<br>
+	Methylation data in gct file format.</li>
+	<li>Number of modules<br>
+	?</li>
+	<li>percent genes<br>
+	?</li>
+</ol>
+
+<h2>Output Files</h2>
+
+<ol>
+	<li>AllGenes_amaretto.tsv<br>
+	list of genes</li>
+	<li>AllRegulators_amaretto.tsv<br>
+	list of regulators</li>
+	<li>ModuleData_amaretto.gct<br>
+	Data for modules</li>
+	<li>ModuleMembership_amaretto.tsv<br>
+	List of membership of genes to modules</li>
+	<li>NrModules_amaretto.tsv<br>
+	?</li>
+	<li>RegulatoryProgramData_amaretto.tsv<br>
+	?</li>
+	<li>RegulatoryPrograms_amaretto.tsv<br>
+	?</li>
+	<li>&lt;input_base_name&gt;_Expression_module_&lt;number&gt;.pdf<br>
+	Plot of module</li>
+</ol>
+
+<h2>Example Data</h2>
+
+<p>Preprocessed TCGA data is available at&nbsp;https://datasets.genepattern.org/?prefix=data/module_support_files/Amaretto/ for most of the TCGA cancer types.&nbsp;</p>
+
+<h2>Requirements</h2>
+
+<p>[any software requirements for running this, e.g., version of R, licensing]</p>
+
+
+<h2>Parameters</h2>
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>expression file*</td>
+			<td>gene expression file in gct format</td>
+		</tr>
+		<tr>
+			<td>copy number file*</td>
+			<td>copy number data in gct format</td>
+		</tr>
+		<tr>
+			<td>methylation file*</td>
+			<td>methylation data in gct format</td>
+		</tr>
+		<tr>
+			<td>number of modules*</td>
+			<td>The number of modules to build.</td>
+		</tr>
+		<tr>
+			<td>percent genes*</td>
+			<td>Use this many % of the most varying genes</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><span style="color: red;">*</span> - required</p>
+			</div>
+		</div>
+	</div>
+
+	</div>
+	<footer class="container fluid gp-footer">
+	<div class="fluid text-center">©2006-2019 Regents of the University of California &amp; The Broad Institute of MIT and Harvard</div> 
+</footer>
+
+
+
+<div id="feedly-mini" title="feedly Mini tookit"></div></body></html>
