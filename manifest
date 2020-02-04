@@ -2,7 +2,7 @@
 #Mon Jun 18 21:02:09 UTC 2018
 JVMLevel=
 author=Olivier Gevaert, Stanford University, wrapped as a module by Ted Liefeld, UCSD School of Medicine.
-categories=SingleCell
+categories=Single-Cell
 commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/amaretto/run_amaretto_module.R  --expression.file\=<expression.file> --copy.number.file\=<copy.number.file> --methylation.file\=<methylation.file> --output.file\=<output.file> --percent.genes\=<percent.genes> --number.of.modules\=<number.of.modules> --driver.gene.list\=<driver.gene.list> --driver.gene.list.file\=<driver.gene.list.file> --driver.gene.list.selection.mode\=<driver.gene.list.selection.mode> --num.cpu\=<job.cpuCount>  --gene.sets.database\=<gene.sets.database>  
 cpuType=any
 description=Discovery of driver genes using epigenomic, genomic and transcriptomic data using module networks with penalized regression. 
@@ -165,6 +165,6 @@ quality=${quality.level}
 requiredPatchLSIDs=
 requiredPatchURLs=
 taskDoc=doc.html
-taskType=SingleCell
+taskType=Single-Cell
 userid=ted-dev
 version=Initial Revision
