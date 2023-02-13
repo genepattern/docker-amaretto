@@ -143,7 +143,7 @@ p9_prefix=
 p9_prefix_when_specified=
 p9_type=java.lang.String
 p9_value=computed\=Use list computed from CNV/MET data;predefined\=Use predefined list;intersect\=Compute and intersect with predefined list;union\=Compute and union with predefined list
-p9_default_value=
+p9_default_value=computed
 
 p10_MODE=IN
 p10_TYPE=FILE
